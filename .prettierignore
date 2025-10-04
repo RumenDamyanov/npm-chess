@@ -1,0 +1,15 @@
+# Build outputs
+dist/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Documentation
+wiki/
+.ai/
+
+# Generated files
+*.log
+*.tsbuildinfo
+.DS_Store

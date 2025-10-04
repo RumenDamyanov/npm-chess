@@ -1,0 +1,206 @@
+{
+  "version": "1.0.0",
+  "maxDepth": 12,
+  "description": "Comprehensive chess opening book with popular variations",
+  "positions": {
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -": [
+      { "move": "e4", "weight": 45, "eco": "C00", "name": "King's Pawn Opening" },
+      { "move": "d4", "weight": 40, "eco": "D00", "name": "Queen's Pawn Opening" },
+      { "move": "Nf3", "weight": 10, "eco": "A04", "name": "Réti Opening" },
+      { "move": "c4", "weight": 5, "eco": "A10", "name": "English Opening" }
+    ],
+    "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3": [
+      { "move": "c5", "weight": 40, "eco": "B20", "name": "Sicilian Defense" },
+      { "move": "e5", "weight": 30, "eco": "C40", "name": "King's Pawn Game" },
+      { "move": "c6", "weight": 15, "eco": "B10", "name": "Caro-Kann Defense" },
+      { "move": "e6", "weight": 10, "eco": "C00", "name": "French Defense" },
+      { "move": "d6", "weight": 5, "eco": "B07", "name": "Pirc Defense" }
+    ],
+    "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6": [
+      { "move": "Nf3", "weight": 70, "eco": "C40", "name": "King's Knight Opening" },
+      { "move": "Bc4", "weight": 15, "eco": "C23", "name": "Bishop's Opening" },
+      { "move": "Nc3", "weight": 10, "eco": "C25", "name": "Vienna Game" },
+      { "move": "d4", "weight": 5, "eco": "C21", "name": "Center Game" }
+    ],
+    "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq -": [
+      { "move": "Nc6", "weight": 80, "eco": "C40", "name": "King's Knight Opening" },
+      { "move": "Nf6", "weight": 15, "eco": "C42", "name": "Petrov Defense" },
+      { "move": "d6", "weight": 5, "eco": "C41", "name": "Philidor Defense" }
+    ],
+    "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -": [
+      { "move": "Bb5", "weight": 50, "eco": "C60", "name": "Ruy Lopez" },
+      { "move": "Bc4", "weight": 30, "eco": "C50", "name": "Italian Game" },
+      { "move": "d4", "weight": 15, "eco": "C44", "name": "Scotch Game" },
+      { "move": "Nc3", "weight": 5, "eco": "C46", "name": "Four Knights Game" }
+    ],
+    "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq -": [
+      { "move": "a6", "weight": 60, "eco": "C70", "name": "Ruy Lopez, Morphy Defense" },
+      { "move": "Nf6", "weight": 30, "eco": "C65", "name": "Ruy Lopez, Berlin Defense" },
+      { "move": "Bc5", "weight": 10, "eco": "C64", "name": "Ruy Lopez, Classical Defense" }
+    ],
+    "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq -": [
+      { "move": "Ba4", "weight": 80, "eco": "C78", "name": "Ruy Lopez, Morphy Defense" },
+      { "move": "Bxc6", "weight": 20, "eco": "C68", "name": "Ruy Lopez, Exchange Variation" }
+    ],
+    "r1bqkb1r/pppp1ppp/2n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq -": [
+      { "move": "O-O", "weight": 50, "eco": "C53", "name": "Italian Game, Giuoco Piano" },
+      { "move": "d4", "weight": 30, "eco": "C55", "name": "Italian Game, Two Knights Defense" },
+      { "move": "d3", "weight": 20, "eco": "C50", "name": "Italian Game, Giuoco Pianissimo" }
+    ],
+    "r1bqkb1r/pppp1ppp/2n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq -": [
+      { "move": "Bc5", "weight": 50, "eco": "C53", "name": "Italian Game, Giuoco Piano" },
+      { "move": "Nxe4", "weight": 30, "eco": "C57", "name": "Italian Game, Two Knights Defense" },
+      { "move": "Be7", "weight": 20, "eco": "C50", "name": "Italian Game, Hungarian Defense" }
+    ],
+    "r1bqk2r/pppp1ppp/2n2n2/2b1p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq -": [
+      { "move": "c3", "weight": 70, "eco": "C54", "name": "Italian Game, Giuoco Piano" },
+      { "move": "d3", "weight": 20, "eco": "C53", "name": "Italian Game, Giuoco Piano" },
+      { "move": "Nc3", "weight": 10, "eco": "C50", "name": "Italian Game" }
+    ],
+    "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6": [
+      { "move": "Nf3", "weight": 55, "eco": "B20", "name": "Sicilian Defense" },
+      { "move": "Nc3", "weight": 25, "eco": "B23", "name": "Sicilian Defense, Closed" },
+      { "move": "d4", "weight": 10, "eco": "B21", "name": "Sicilian Defense, Smith-Morra Gambit" },
+      { "move": "d3", "weight": 10, "eco": "B10", "name": "Caro-Kann Defense" }
+    ],
+    "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq -": [
+      { "move": "d6", "weight": 40, "eco": "B50", "name": "Sicilian Defense" },
+      { "move": "Nc6", "weight": 30, "eco": "B30", "name": "Sicilian Defense" },
+      { "move": "e6", "weight": 20, "eco": "B40", "name": "Sicilian Defense, French Variation" },
+      { "move": "g6", "weight": 10, "eco": "B27", "name": "Sicilian Defense, Hyperaccelerated Dragon" }
+    ],
+    "rnbqkbnr/pp2pppp/3p4/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -": [
+      { "move": "d4", "weight": 80, "eco": "B50", "name": "Sicilian Defense" },
+      { "move": "Bb5+", "weight": 15, "eco": "B51", "name": "Sicilian Defense, Moscow Variation" },
+      { "move": "c4", "weight": 5, "eco": "B24", "name": "Sicilian Defense, Closed" }
+    ],
+    "rnbqkbnr/pp2pppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq -": [
+      { "move": "Nxd4", "weight": 100, "eco": "B50", "name": "Sicilian Defense, Open" }
+    ],
+    "rnbqkbnr/pp2pppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq -": [
+      { "move": "Nf6", "weight": 60, "eco": "B90", "name": "Sicilian Defense, Najdorf" },
+      { "move": "cxd4", "weight": 30, "eco": "B50", "name": "Sicilian Defense" },
+      { "move": "g6", "weight": 10, "eco": "B70", "name": "Sicilian Defense, Dragon" }
+    ],
+    "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq -": [
+      { "move": "Nc3", "weight": 80, "eco": "B90", "name": "Sicilian Defense, Najdorf" },
+      { "move": "Bd3", "weight": 15, "eco": "B50", "name": "Sicilian Defense" },
+      { "move": "f3", "weight": 5, "eco": "B55", "name": "Sicilian Defense" }
+    ],
+    "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq -": [
+      { "move": "a6", "weight": 50, "eco": "B90", "name": "Sicilian Defense, Najdorf" },
+      { "move": "e6", "weight": 30, "eco": "B44", "name": "Sicilian Defense, Taimanov" },
+      { "move": "g6", "weight": 20, "eco": "B70", "name": "Sicilian Defense, Dragon" }
+    ],
+    "rnbqkbnr/pppppp1p/8/6p1/4P3/8/PPPP1PPP/RNBQKBNR w KQkq g6": [
+      { "move": "d4", "weight": 70, "eco": "B00", "name": "Modern Defense" },
+      { "move": "Nf3", "weight": 20, "eco": "B00", "name": "Modern Defense" },
+      { "move": "Bc4", "weight": 10, "eco": "B00", "name": "Modern Defense" }
+    ],
+    "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR b KQkq c3": [
+      { "move": "Nf6", "weight": 50, "eco": "A10", "name": "English Opening" },
+      { "move": "e5", "weight": 30, "eco": "A20", "name": "English Opening" },
+      { "move": "e6", "weight": 15, "eco": "A11", "name": "English Opening, Caro-Kann Defensive System" },
+      { "move": "g6", "weight": 5, "eco": "A10", "name": "English Opening" }
+    ],
+    "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3": [
+      { "move": "Nf6", "weight": 45, "eco": "E00", "name": "Indian Defense" },
+      { "move": "d5", "weight": 40, "eco": "D00", "name": "Queen's Pawn Game" },
+      { "move": "e6", "weight": 10, "eco": "A40", "name": "Horwitz Defense" },
+      { "move": "c5", "weight": 5, "eco": "A40", "name": "Benoni Defense" }
+    ],
+    "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6": [
+      { "move": "c4", "weight": 70, "eco": "D06", "name": "Queen's Gambit" },
+      { "move": "Nf3", "weight": 20, "eco": "D02", "name": "Queen's Pawn Game" },
+      { "move": "Bf4", "weight": 10, "eco": "D00", "name": "London System" }
+    ],
+    "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3": [
+      { "move": "dxc4", "weight": 45, "eco": "D20", "name": "Queen's Gambit Accepted" },
+      { "move": "e6", "weight": 35, "eco": "D30", "name": "Queen's Gambit Declined" },
+      { "move": "c6", "weight": 15, "eco": "D10", "name": "Slav Defense" },
+      { "move": "Nf6", "weight": 5, "eco": "D06", "name": "Queen's Gambit" }
+    ],
+    "rnbqkbnr/ppp1pppp/8/8/2pP4/8/PP2PPPP/RNBQKBNR w KQkq -": [
+      { "move": "e3", "weight": 50, "eco": "D20", "name": "Queen's Gambit Accepted" },
+      { "move": "e4", "weight": 30, "eco": "D20", "name": "Queen's Gambit Accepted" },
+      { "move": "Nf3", "weight": 20, "eco": "D25", "name": "Queen's Gambit Accepted" }
+    ],
+    "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq -": [
+      { "move": "Nc3", "weight": 60, "eco": "D30", "name": "Queen's Gambit Declined" },
+      { "move": "Nf3", "weight": 30, "eco": "D35", "name": "Queen's Gambit Declined" },
+      { "move": "cxd5", "weight": 10, "eco": "D31", "name": "Queen's Gambit Declined, Exchange Variation" }
+    ],
+    "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq -": [
+      { "move": "c4", "weight": 60, "eco": "E00", "name": "Indian Game" },
+      { "move": "Nf3", "weight": 30, "eco": "A45", "name": "Indian Game" },
+      { "move": "Bg5", "weight": 10, "eco": "A45", "name": "Trompowsky Attack" }
+    ],
+    "rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3": [
+      { "move": "e6", "weight": 50, "eco": "E00", "name": "Indian Game" },
+      { "move": "g6", "weight": 30, "eco": "E60", "name": "King's Indian Defense" },
+      { "move": "d5", "weight": 15, "eco": "E06", "name": "Catalan Opening" },
+      { "move": "c5", "weight": 5, "eco": "E20", "name": "Nimzo-Indian Defense" }
+    ],
+    "rnbqkb1r/pppp1ppp/4pn2/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq -": [
+      { "move": "Nc3", "weight": 70, "eco": "E00", "name": "Indian Game" },
+      { "move": "Nf3", "weight": 20, "eco": "E12", "name": "Queen's Indian Defense" },
+      { "move": "g3", "weight": 10, "eco": "E00", "name": "Catalan Opening" }
+    ],
+    "rnbqkb1r/pppp1ppp/4pn2/8/2PP4/2N5/PP2PPPP/R1BQKBNR b KQkq -": [
+      { "move": "Bb4", "weight": 60, "eco": "E20", "name": "Nimzo-Indian Defense" },
+      { "move": "d5", "weight": 30, "eco": "E32", "name": "Nimzo-Indian Defense, Classical" },
+      { "move": "c5", "weight": 10, "eco": "E40", "name": "Nimzo-Indian Defense" }
+    ],
+    "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq -": [
+      { "move": "Qc2", "weight": 50, "eco": "E32", "name": "Nimzo-Indian Defense, Classical" },
+      { "move": "Bd2", "weight": 30, "eco": "E38", "name": "Nimzo-Indian Defense, Classical" },
+      { "move": "Nf3", "weight": 20, "eco": "E20", "name": "Nimzo-Indian Defense" }
+    ],
+    "rnbqkb1r/pppppp1p/5n2/6p1/2PP4/8/PP2PPPP/RNBQKBNR w KQkq g6": [
+      { "move": "Nc3", "weight": 60, "eco": "E60", "name": "King's Indian Defense" },
+      { "move": "Nf3", "weight": 30, "eco": "E60", "name": "King's Indian Defense" },
+      { "move": "e4", "weight": 10, "eco": "E60", "name": "King's Indian Defense, Four Pawns Attack" }
+    ],
+    "rnbqkb1r/pppppp1p/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR b KQkq -": [
+      { "move": "Bg7", "weight": 90, "eco": "E62", "name": "King's Indian Defense, Fianchetto Variation" },
+      { "move": "d5", "weight": 10, "eco": "E60", "name": "King's Indian Defense, Grünfeld Defense" }
+    ],
+    "rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq -": [
+      { "move": "e4", "weight": 50, "eco": "E92", "name": "King's Indian Defense, Classical Variation" },
+      { "move": "Nf3", "weight": 40, "eco": "E62", "name": "King's Indian Defense, Fianchetto Variation" },
+      { "move": "g3", "weight": 10, "eco": "E60", "name": "King's Indian Defense, Fianchetto Variation" }
+    ],
+
+    "rnbqkbnr/pp1p1ppp/4p3/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq -": [
+      { "move": "d4", "weight": 80, "eco": "C00", "name": "French Defense" },
+      { "move": "Nf3", "weight": 15, "eco": "C00", "name": "French Defense, King's Indian Attack" },
+      { "move": "d3", "weight": 5, "eco": "C00", "name": "French Defense, King's Indian Attack" }
+    ],
+    "rnbqkbnr/pp1p1ppp/4p3/2p5/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3": [
+      { "move": "d5", "weight": 100, "eco": "C00", "name": "French Defense" }
+    ],
+    "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq d6": [
+      { "move": "Nc3", "weight": 50, "eco": "C11", "name": "French Defense, Classical" },
+      { "move": "exd5", "weight": 30, "eco": "C01", "name": "French Defense, Exchange Variation" },
+      { "move": "Nd2", "weight": 20, "eco": "C03", "name": "French Defense, Tarrasch" }
+    ],
+    "rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -": [
+      { "move": "d5", "weight": 40, "eco": "A04", "name": "Réti Opening" },
+      { "move": "Nf6", "weight": 35, "eco": "A04", "name": "Réti Opening" },
+      { "move": "c5", "weight": 15, "eco": "A09", "name": "Réti Opening" },
+      { "move": "g6", "weight": 10, "eco": "A07", "name": "King's Indian Attack" }
+    ],
+    "r1bqkb1r/pppp1ppp/2n2n2/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3": [
+      { "move": "exd4", "weight": 90, "eco": "C44", "name": "Scotch Game" },
+      { "move": "Nxd4", "weight": 10, "eco": "C45", "name": "Scotch Game, Mieses Variation" }
+    ],
+    "r1bqkb1r/pppp1ppp/2n2n2/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq -": [
+      { "move": "Nxd4", "weight": 100, "eco": "C45", "name": "Scotch Game" }
+    ],
+    "r1bqkb1r/pppp1ppp/2n2n2/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq -": [
+      { "move": "Nxd4", "weight": 60, "eco": "C45", "name": "Scotch Game" },
+      { "move": "Bc5", "weight": 30, "eco": "C45", "name": "Scotch Game, Classical Variation" },
+      { "move": "Bb4+", "weight": 10, "eco": "C45", "name": "Scotch Game, Schmidt Variation" }
+    ]
+  }
+}

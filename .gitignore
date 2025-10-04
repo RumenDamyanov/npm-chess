@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# OS files
+Thumbs.db
+.DS_Store
+*~
+
+# AI tools
+.ai/
+
+# Wiki source (used for GitHub wiki generation)
+wiki/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Cache
+.cache/
+.eslintcache
+.prettierache
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Package lock files (keep package-lock.json, ignore others)
+yarn.lock
+pnpm-lock.yaml

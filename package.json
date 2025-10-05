@@ -17,6 +17,10 @@
     "board-game"
   ],
   "homepage": "https://github.com/RumenDamyanov/npm-chess#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/RumenDamyanov"
+  },
   "bugs": {
     "url": "https://github.com/RumenDamyanov/npm-chess/issues"
   },

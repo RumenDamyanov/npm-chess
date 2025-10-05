@@ -1,8 +1,10 @@
 # 🤖 npm-chess
 
 [![CI](https://github.com/RumenDamyanov/npm-chess/actions/workflows/ci.yml/badge.svg)](https://github.com/RumenDamyanov/npm-chess/actions)
+[![CodeQL](https://github.com/RumenDamyanov/npm-chess/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/RumenDamyanov/npm-chess/actions/workflows/github-code-scanning/codeql)
+[![Dependabot](https://github.com/RumenDamyanov/npm-chess/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/RumenDamyanov/npm-chess/actions/workflows/dependabot/dependabot-updates)
 [![codecov](https://codecov.io/gh/RumenDamyanov/npm-chess/branch/master/graph/badge.svg)](https://codecov.io/gh/RumenDamyanov/npm-chess)
-[![npm version](https://badge.fury.io/js/%40rumenx%2Fchess.svg)](https://www.npmjs.com/package/@rumenx/chess)
+[![npm version](https://img.shields.io/npm/v/@rumenx/chess.svg)](https://www.npmjs.com/package/@rumenx/chess)
 
 A powerful, type-safe chess engine library for TypeScript/JavaScript applications with complete chess rules implementation, FEN/PGN support, AI opponents with opening book, REST API, and comprehensive test coverage.
 

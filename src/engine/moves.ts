@@ -16,7 +16,7 @@ import type {
   MoveOptions,
   MoveValidation,
 } from '@/types/index';
-import { Board } from './board';
+import type { Board } from './board';
 import { getPseudoLegalMoves, isKingInCheck, isSquareUnderAttack } from './pieces';
 
 /**
@@ -36,11 +36,7 @@ export class MoveGenerator {
    * @param castlingRights - Castling rights for both colors
    * @param enPassantSquare - Current en passant target square
    */
-  constructor(
-    board: Board,
-    castlingRights: CastlingRights,
-    enPassantSquare: Square | null = null
-  ) {
+  constructor(board: Board, castlingRights: CastlingRights, enPassantSquare: Square | null = null) {
     this.board = board;
     this.castlingRights = castlingRights;
     this.enPassantSquare = enPassantSquare;
@@ -81,12 +77,7 @@ export class MoveGenerator {
     if (!fromCoords) return [];
 
     // Get pseudo-legal moves (ignoring check)
-    const pseudoLegalMoves = getPseudoLegalMoves(
-      this.board,
-      fromCoords,
-      piece.type,
-      color
-    );
+    const pseudoLegalMoves = getPseudoLegalMoves(this.board, fromCoords, piece.type, color);
 
     const legalMoves: Move[] = [];
 
@@ -198,11 +189,7 @@ export class MoveGenerator {
     }
 
     // Check if promotion is required but not provided
-    if (
-      piece.type === 'pawn' &&
-      this.isPawnPromotionRequired(from, to, color) &&
-      !promotion
-    ) {
+    if (piece.type === 'pawn' && this.isPawnPromotionRequired(from, to, color) && !promotion) {
       return { valid: false, error: 'Pawn promotion required' };
     }
 
@@ -270,9 +257,7 @@ export class MoveGenerator {
 
     const capturedPawnRank = color === 'white' ? enPassantCoords.row - 1 : enPassantCoords.row + 1;
     const capturedPawnSquare = this.board.coordsToSquare(capturedPawnRank, enPassantCoords.col);
-    const capturedPawn = capturedPawnSquare
-      ? this.board.getPiece(capturedPawnSquare)
-      : null;
+    const capturedPawn = capturedPawnSquare ? this.board.getPiece(capturedPawnSquare) : null;
 
     return {
       from,
@@ -345,9 +330,7 @@ export class MoveGenerator {
    */
   private canCastleKingside(color: Color): boolean {
     const hasRights =
-      color === 'white'
-        ? this.castlingRights.whiteKingside
-        : this.castlingRights.blackKingside;
+      color === 'white' ? this.castlingRights.whiteKingside : this.castlingRights.blackKingside;
 
     if (!hasRights) return false;
 
@@ -395,9 +378,7 @@ export class MoveGenerator {
    */
   private canCastleQueenside(color: Color): boolean {
     const hasRights =
-      color === 'white'
-        ? this.castlingRights.whiteQueenside
-        : this.castlingRights.blackQueenside;
+      color === 'white' ? this.castlingRights.whiteQueenside : this.castlingRights.blackQueenside;
 
     if (!hasRights) return false;
 

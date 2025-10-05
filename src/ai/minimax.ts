@@ -25,7 +25,7 @@ interface SearchStats {
 
 /**
  * Minimax AI Engine
- * 
+ *
  * Uses minimax algorithm with alpha-beta pruning to search the game tree
  * and find the best move. Evaluates positions using material and positional
  * evaluation functions.
@@ -80,7 +80,7 @@ export class MinimaxAI implements AIEngine {
    */
   public async analyze(game: Game): Promise<AIAnalysis> {
     const startTime = Date.now();
-    
+
     // Check opening book first (if available)
     if (this.openingBook) {
       const bookMove = this.openingBook.getMove(game);
@@ -88,7 +88,7 @@ export class MinimaxAI implements AIEngine {
         // Convert the opening book move notation to a Move object
         const legalMoves = game.getLegalMoves();
         const matchingMove = legalMoves.find((m) => m.san === bookMove.move);
-        
+
         if (matchingMove) {
           return {
             bestMove: matchingMove,
@@ -102,7 +102,7 @@ export class MinimaxAI implements AIEngine {
         }
       }
     }
-    
+
     // Reset stats
     this.stats = {
       nodesEvaluated: 0,
@@ -118,6 +118,7 @@ export class MinimaxAI implements AIEngine {
     // Only one legal move? Return it immediately
     if (legalMoves.length === 1) {
       return {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         bestMove: legalMoves[0]!,
         score: 0,
         thinkingTime: Date.now() - startTime,
@@ -173,8 +174,10 @@ export class MinimaxAI implements AIEngine {
       // Pick a random move from top moves
       const topCount = Math.min(3, evaluations.length);
       const randomIndex = Math.floor(Math.random() * topCount);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       bestMove = evaluations[randomIndex]!.move;
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       bestMove = evaluations[0]!.move;
     }
 
@@ -182,6 +185,7 @@ export class MinimaxAI implements AIEngine {
 
     return {
       bestMove,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       score: evaluations[0]!.score,
       thinkingTime,
       depth: this.stats.maxDepthReached,
@@ -210,16 +214,15 @@ export class MinimaxAI implements AIEngine {
     startTime: number
   ): number {
     this.stats.nodesEvaluated++;
-    this.stats.maxDepthReached = Math.max(
-      this.stats.maxDepthReached,
-      this.config.maxDepth - depth
-    );
+    this.stats.maxDepthReached = Math.max(this.stats.maxDepthReached, this.config.maxDepth - depth);
 
     // Terminal conditions
     const status = game.getStatus();
     if (status === 'checkmate') {
       // Checkmate is very bad/good depending on side
-      return maximizingPlayer ? -10000 + (this.config.maxDepth - depth) : 10000 - (this.config.maxDepth - depth);
+      return maximizingPlayer
+        ? -10000 + (this.config.maxDepth - depth)
+        : 10000 - (this.config.maxDepth - depth);
     }
     if (status === 'stalemate' || status === 'draw') {
       return 0; // Draw is neutral
@@ -242,14 +245,7 @@ export class MinimaxAI implements AIEngine {
         const gameCopy = this.cloneGame(game);
         gameCopy.move(move);
 
-        const evaluation = this.minimax(
-          gameCopy,
-          depth - 1,
-          alpha,
-          beta,
-          false,
-          startTime
-        );
+        const evaluation = this.minimax(gameCopy, depth - 1, alpha, beta, false, startTime);
 
         maxEval = Math.max(maxEval, evaluation);
         alpha = Math.max(alpha, evaluation);
@@ -274,14 +270,7 @@ export class MinimaxAI implements AIEngine {
         const gameCopy = this.cloneGame(game);
         gameCopy.move(move);
 
-        const evaluation = this.minimax(
-          gameCopy,
-          depth - 1,
-          alpha,
-          beta,
-          true,
-          startTime
-        );
+        const evaluation = this.minimax(gameCopy, depth - 1, alpha, beta, true, startTime);
 
         minEval = Math.min(minEval, evaluation);
         beta = Math.min(beta, evaluation);
@@ -333,7 +322,7 @@ export class MinimaxAI implements AIEngine {
 
   /**
    * Clone a game state for search
-   * 
+   *
    * Creates a deep copy by exporting to FEN and loading it back.
    * This ensures complete isolation between search branches.
    *
@@ -344,7 +333,7 @@ export class MinimaxAI implements AIEngine {
     // Clone by creating a new game from FEN string
     // This avoids circular dependency issues
     const fen = game.getFen();
-    const GameClass = game.constructor as any;
+    const GameClass = game.constructor as typeof Game;
     const cloned = new GameClass();
     cloned.loadFen(fen);
     return cloned;

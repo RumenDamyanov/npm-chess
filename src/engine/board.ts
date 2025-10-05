@@ -46,7 +46,9 @@ export class Board {
 
     // Set up pawns
     for (let col = 0; col < 8; col++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.board[1]![col] = { type: 'pawn', color: 'white' };
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.board[6]![col] = { type: 'pawn', color: 'black' };
     }
 
@@ -62,6 +64,7 @@ export class Board {
       'rook',
     ];
     for (let col = 0; col < 8; col++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.board[0]![col] = { type: whitePieces[col]!, color: 'white' };
     }
 
@@ -77,6 +80,7 @@ export class Board {
       'rook',
     ];
     for (let col = 0; col < 8; col++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.board[7]![col] = { type: blackPieces[col]!, color: 'black' };
     }
   }
@@ -111,6 +115,7 @@ export class Board {
   public setPiece(square: Square, piece: Piece | null): void {
     const coords = this.squareToCoords(square);
     if (!coords) return;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.board[coords.row]![coords.col] = piece;
   }
 
@@ -122,6 +127,7 @@ export class Board {
    */
   public setPieceAt(row: number, col: number, piece: Piece | null): void {
     if (row < 0 || row > 7 || col < 0 || col > 7) return;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.board[row]![col] = piece;
   }
 
@@ -246,9 +252,7 @@ export class Board {
    * @returns A deep copy of the board
    */
   public clone(): Board {
-    const clonedBoard = this.board.map((row) =>
-      row.map((piece) => (piece ? { ...piece } : null))
-    );
+    const clonedBoard = this.board.map((row) => row.map((piece) => (piece ? { ...piece } : null)));
     return new Board(clonedBoard);
   }
 
@@ -314,7 +318,7 @@ export class Board {
       for (let col = 0; col < 8; col++) {
         const piece = this.board[row]?.[col];
         if (piece) {
-          const symbol = pieceSymbols[`${piece.color}-${piece.type}`] || ' ';
+          const symbol = pieceSymbols[`${piece.color}-${piece.type}`] ?? ' ';
           result += ` ${symbol} │`;
         } else {
           result += '   │';
@@ -352,7 +356,7 @@ export class Board {
       for (let col = 0; col < 8; col++) {
         const piece = this.board[row]?.[col];
         if (piece) {
-          result += pieceChars[`${piece.color}-${piece.type}`] || '.';
+          result += pieceChars[`${piece.color}-${piece.type}`] ?? '.';
         } else {
           result += '.';
         }

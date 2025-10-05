@@ -165,7 +165,7 @@ export class OpeningBook {
    */
   public getMoves(fen: string): OpeningMove[] {
     const normalizedFEN = this.normalizeFEN(fen);
-    return this.positions.get(normalizedFEN) || [];
+    return this.positions.get(normalizedFEN) ?? [];
   }
 
   /**
@@ -233,9 +233,7 @@ export class OpeningBook {
   private selectMove(moves: OpeningMove[]): OpeningMove {
     if (!this.config.randomize) {
       // Always return highest weighted move
-      return moves.reduce((best, current) =>
-        current.weight > best.weight ? current : best
-      );
+      return moves.reduce((best, current) => (current.weight > best.weight ? current : best));
     }
 
     // Weighted random selection
@@ -266,14 +264,12 @@ export class OpeningBook {
  * @param filePath - Path to the JSON file
  * @returns Opening book with loaded data
  */
-export async function loadOpeningBookFromFile(
-  filePath: string
-): Promise<OpeningBook> {
+export async function loadOpeningBookFromFile(filePath: string): Promise<OpeningBook> {
   // Dynamic import for Node.js fs module
   const fs = await import('fs/promises');
   const data = await fs.readFile(filePath, 'utf-8');
   const bookData = JSON.parse(data) as OpeningBookData;
-  
+
   const book = new OpeningBook();
   book.loadData(bookData);
   return book;

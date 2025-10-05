@@ -124,7 +124,7 @@ export class PgnParser {
    * Remove nested variations from move text
    */
   private static removeVariations(text: string): string {
-    let result = text;
+    const result = text;
     let depth = 0;
     let cleaned = '';
 
@@ -171,13 +171,13 @@ export class PgnParser {
 
     // Generate tag pairs
     const defaultTags: PgnTags = {
-      Event: tags.Event || '?',
-      Site: tags.Site || '?',
-      Date: tags.Date || '????.??.??',
-      Round: tags.Round || '?',
-      White: tags.White || '?',
-      Black: tags.Black || '?',
-      Result: tags.Result || this.getResultString(game),
+      Event: tags.Event ?? '?',
+      Site: tags.Site ?? '?',
+      Date: tags.Date ?? '????.??.??',
+      Round: tags.Round ?? '?',
+      White: tags.White ?? '?',
+      Black: tags.Black ?? '?',
+      Result: tags.Result ?? this.getResultString(game),
     };
 
     // Add all tags
@@ -227,9 +227,9 @@ export class PgnParser {
       // Add move number for white's moves
       if (i % 2 === 0) {
         const moveNumber = Math.floor(i / 2) + 1;
-        moveStr = `${moveNumber}. ${move.san || this.moveToSan(move)}`;
+        moveStr = `${moveNumber}. ${move.san ?? this.moveToSan(move)}`;
       } else {
-        moveStr = move.san || this.moveToSan(move);
+        moveStr = move.san ?? this.moveToSan(move);
       }
 
       // Check if adding this move would exceed line length
@@ -298,7 +298,7 @@ export class PgnParser {
 
     // Piece notation (not for pawns)
     if (move.piece.type !== 'pawn') {
-      san += move.piece.type[0]?.toUpperCase() || '';
+      san += move.piece.type[0]?.toUpperCase() ?? '';
     }
 
     // Add disambiguation if needed (simplified - would need game context for proper disambiguation)
@@ -404,7 +404,7 @@ export class PgnParser {
 
     if (/^[NBRQK]/.test(san)) {
       const pieceChar = san[0];
-      pieceType = this.pieceCharToType(pieceChar || '');
+      pieceType = this.pieceCharToType(pieceChar ?? '');
       rest = san.slice(1);
     }
 
@@ -416,7 +416,7 @@ export class PgnParser {
     let promotion: PieceType | undefined;
     const promotionMatch = rest.match(/=([NBRQ])$/);
     if (promotionMatch) {
-      promotion = this.pieceCharToType(promotionMatch[1] || '');
+      promotion = this.pieceCharToType(promotionMatch[1] ?? '');
       rest = rest.replace(/=[NBRQ]$/, '');
     }
 
@@ -462,7 +462,7 @@ export class PgnParser {
       N: 'knight',
       P: 'pawn',
     };
-    return map[char] || 'pawn';
+    return map[char] ?? 'pawn';
   }
 
   /**

@@ -7,7 +7,7 @@
 import { describe, expect, it } from '@jest/globals';
 import { Board } from '@/engine/board';
 import { MoveGenerator } from '@/engine/moves';
-import type { CastlingRights, Color } from '@/types/index';
+import type { CastlingRights } from '@/types/index';
 
 describe('MoveGenerator', () => {
   const defaultCastlingRights: CastlingRights = {
@@ -238,10 +238,7 @@ describe('MoveGenerator', () => {
       board.setPiece('a8', { type: 'king', color: 'black' });
 
       const generator = new MoveGenerator(board, defaultCastlingRights);
-      const result = generator.validateMove(
-        { from: 'e7', to: 'e8', promotion: 'queen' },
-        'white'
-      );
+      const result = generator.validateMove({ from: 'e7', to: 'e8', promotion: 'queen' }, 'white');
 
       expect(result.valid).toBe(true);
     });

@@ -7,7 +7,6 @@
 
 import { describe, expect, it } from '@jest/globals';
 import { Game } from '@/engine/game';
-import type { GameStatus } from '@/types/index';
 
 describe('Game', () => {
   describe('constructor', () => {

@@ -24,7 +24,7 @@ export const PIECE_VALUES: Record<PieceType, number> = {
 
 /**
  * Piece-Square Tables
- * 
+ *
  * Values for piece positioning. Higher values indicate better squares.
  * Tables are from white's perspective (a1 = bottom-left).
  */
@@ -167,7 +167,8 @@ export function getPieceSquareValue(
   const coords = squareToCoords(square);
   if (!coords) return 0;
 
-  let { row, col } = coords;
+  let { row } = coords;
+  const { col } = coords;
 
   // Flip table for black pieces (they play from top)
   if (piece.color === 'black') {
@@ -175,8 +176,7 @@ export function getPieceSquareValue(
   }
 
   // Use endgame king table if appropriate
-  const table =
-    piece.type === 'king' && isEndgame ? KING_END_TABLE : PIECE_TABLES[piece.type];
+  const table = piece.type === 'king' && isEndgame ? KING_END_TABLE : PIECE_TABLES[piece.type];
 
   const value = table[row]?.[col] ?? 0;
 
@@ -212,7 +212,7 @@ export function evaluatePosition(board: Board, isEndgame: boolean = false): numb
 
 /**
  * Determine if position is endgame
- * 
+ *
  * Endgame is when:
  * - Both sides have no queens, OR
  * - Every side which has a queen has additionally no other pieces or one minor piece maximum
@@ -250,7 +250,12 @@ export function isEndgame(board: Board): boolean {
   }
 
   // Queen with minimal material
-  if (whiteQueens > 0 && whiteMinor + whiteRooks <= 1 && blackQueens > 0 && blackMinor + blackRooks <= 1) {
+  if (
+    whiteQueens > 0 &&
+    whiteMinor + whiteRooks <= 1 &&
+    blackQueens > 0 &&
+    blackMinor + blackRooks <= 1
+  ) {
     return true;
   }
 

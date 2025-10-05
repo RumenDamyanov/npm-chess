@@ -18,6 +18,7 @@ export const UTILS_VERSION = '0.1.0';
 /**
  * Simple logger utility for Phase 1
  */
+/* eslint-disable no-console */
 export const logger = {
   info: (message: string, ...args: unknown[]): void => {
     console.log(`[INFO] ${message}`, ...args);
@@ -34,3 +35,4 @@ export const logger = {
     }
   },
 };
+/* eslint-enable no-console */

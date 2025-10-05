@@ -173,7 +173,10 @@ export interface AIEngine {
 /**
  * Default difficulty configurations
  */
-export const DIFFICULTY_CONFIGS: Record<AIDifficulty, Required<Omit<AIConfig, 'maxThinkingTime'>>> = {
+export const DIFFICULTY_CONFIGS: Record<
+  AIDifficulty,
+  Required<Omit<AIConfig, 'maxThinkingTime'>>
+> = {
   harmless: {
     difficulty: 'harmless',
     maxDepth: 1,
@@ -223,7 +226,7 @@ export function getDefaultConfig(difficulty: AIDifficulty): AIConfig {
  * @returns Merged configuration
  */
 export function mergeConfig(userConfig?: AIConfig): Required<AIConfig> {
-  const difficulty = userConfig?.difficulty || 'medium';
+  const difficulty = userConfig?.difficulty ?? 'medium';
   const defaults = DIFFICULTY_CONFIGS[difficulty];
 
   return {

@@ -141,6 +141,5 @@ export interface GameConfig {
 }
 
 // Re-export all types
-export type {
-  // Core types are already exported above
-};
+export // Core types are already exported above
+ type {};

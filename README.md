@@ -25,28 +25,23 @@ All implementations share the same API design and features, making it easy to sw
   - Special moves: castling (kingside/queenside), en passant, pawn promotion
   - Check, checkmate, and stalemate detection
   - Draw conditions: insufficient material, fifty-move rule, threefold repetition
-  
 - 🎯 **Move Validation** - Robust legal move checking
   - Generate all legal moves for current position
   - Validate moves before execution
   - Prevent moves that leave king in check
-  
 - 📝 **FEN & PGN Support** - Standard chess notation
   - Import/export positions using FEN (Forsyth-Edwards Notation)
   - Import/export games using PGN (Portable Game Notation)
   - Support for Seven Tag Roster and SAN (Standard Algebraic Notation)
   - Comments and variations in PGN
-  
 - 🔄 **Game Management** - Complete game state control
   - Full move history with undo support
   - Position repetition tracking
   - Castling rights management
   - Half-move and full-move clock tracking
-  
 - 🔒 **Type-Safe** - Full TypeScript support
   - Comprehensive type definitions for all chess entities
   - Strict null checks and type safety throughout
-  
 - 🧪 **Extensively Tested** - **326 passing tests** (100% pass rate, 88.76% coverage)
   - 236 unit tests covering all engine and AI components
   - 42 integration tests for complete game scenarios
@@ -54,7 +49,6 @@ All implementations share the same API design and features, making it easy to sw
   - 27 REST API integration tests for all endpoints
   - Famous games, checkmate patterns, draw scenarios
   - Edge cases and error handling
-  
 - 📖 **Well Documented** - Comprehensive documentation
   - JSDoc comments on all public APIs
   - 5 detailed usage examples with explanations
@@ -65,7 +59,6 @@ All implementations share the same API design and features, making it easy to sw
 - 🤖 **AI Engines** - Multiple AI implementations
   - Random AI: Simple baseline opponent
   - Minimax AI: Competitive play with alpha-beta pruning
-  
 - 🎯 **Six Difficulty Levels**
   - **Harmless**: Depth 1, 50% randomness - Very weak, great for absolute beginners
   - **Easy**: Depth 2, 30% randomness - Good for learning players
@@ -93,13 +86,11 @@ All implementations share the same API design and features, making it easy to sw
   - Instant moves (<1ms) vs minimax search (50-150ms)
   - Weighted move selection for realistic variety
   - Italian Game, Ruy Lopez, Sicilian, French, Queen's Gambit, King's Indian, and more
-  
 - ⚙️ **Configurable Behavior**
   - Deterministic or randomized move selection
   - Minimum weight filtering
   - Maximum depth limiting
   - Enable/disable on demand
-  
 - 🎨 **Customizable Database**
   - Load comprehensive databases from JSON files
   - Create custom opening repertoires
@@ -309,14 +300,14 @@ console.log('Nodes evaluated:', analysis.nodesEvaluated);
 
 #### Available Difficulty Levels
 
-| Level | Depth | Randomness | Description |
-|-------|-------|------------|-------------|
-| **harmless** | 1 | 50% | Very weak, great for absolute beginners |
-| **easy** | 2 | 30% | Good for learning players |
-| **medium** | 3 | 10% | Balanced opponent |
-| **hard** | 4 | 5% | Challenging for intermediate players |
-| **expert** | 5 | 0% | Strong tactical play |
-| **godlike** | 6 | 0% | Maximum strength, near-perfect play |
+| Level        | Depth | Randomness | Description                             |
+| ------------ | ----- | ---------- | --------------------------------------- |
+| **harmless** | 1     | 50%        | Very weak, great for absolute beginners |
+| **easy**     | 2     | 30%        | Good for learning players               |
+| **medium**   | 3     | 10%        | Balanced opponent                       |
+| **hard**     | 4     | 5%         | Challenging for intermediate players    |
+| **expert**   | 5     | 0%         | Strong tactical play                    |
+| **godlike**  | 6     | 0%         | Maximum strength, near-perfect play     |
 
 ```typescript
 // Try different difficulty levels
@@ -330,9 +321,9 @@ const godlike = new MinimaxAI({ difficulty: 'godlike' }); // Hardest
 // Custom configuration
 const custom = new MinimaxAI({
   difficulty: 'expert',
-  maxThinkingTime: 5000,  // 5 seconds max
-  maxDepth: 6,            // Search up to 6 moves ahead
-  randomness: 0.05        // 5% randomness
+  maxThinkingTime: 5000, // 5 seconds max
+  maxDepth: 6, // Search up to 6 moves ahead
+  randomness: 0.05, // 5% randomness
 });
 
 // Simple random opponent (for testing)
@@ -360,8 +351,8 @@ const analysis = await ai.analyze(game);
 
 // Check if opening book was used
 if (analysis.openingName) {
-  console.log('Opening:', analysis.openingName);  // e.g., "King's Pawn Opening"
-  console.log('ECO Code:', analysis.eco);          // e.g., "C00"
+  console.log('Opening:', analysis.openingName); // e.g., "King's Pawn Opening"
+  console.log('ECO Code:', analysis.eco); // e.g., "C00"
 }
 
 // Load comprehensive opening database from file (Node.js)
@@ -370,16 +361,16 @@ ai.setOpeningBook(comprehensiveBook);
 
 // Configure opening book behavior
 openingBook.configure({
-  enabled: true,         // Enable/disable the book
-  maxDepth: 12,          // Use book up to move 12
-  randomize: true,       // Weighted random move selection
-  minWeight: 10          // Filter moves below this weight
+  enabled: true, // Enable/disable the book
+  maxDepth: 12, // Use book up to move 12
+  randomize: true, // Weighted random move selection
+  minWeight: 10, // Filter moves below this weight
 });
 
 // Get opening book statistics
 const stats = openingBook.getStats();
-console.log('Positions:', stats.positionCount);  // Number of positions in book
-console.log('Total moves:', stats.totalMoves);   // Total moves available
+console.log('Positions:', stats.positionCount); // Number of positions in book
+console.log('Total moves:', stats.totalMoves); // Total moves available
 ```
 
 #### Key Features
@@ -410,21 +401,21 @@ const data: OpeningBookData = {
     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [
       { move: 'e4', weight: 45, eco: 'C00', name: "King's Pawn Opening" },
       { move: 'd4', weight: 40, eco: 'D00', name: "Queen's Pawn Opening" },
-    ]
-  }
+    ],
+  },
 };
 book.loadData(data);
 
 // Query the book
-const move = book.getMove(game);              // Get move for current position
-const moves = book.getMoves(fen);             // Get all moves for FEN position
-const hasPosition = book.hasPosition(fen);    // Check if position exists
+const move = book.getMove(game); // Get move for current position
+const moves = book.getMoves(fen); // Get all moves for FEN position
+const hasPosition = book.hasPosition(fen); // Check if position exists
 
 // Configuration
 book.configure({
-  randomize: false,      // Always pick highest-weighted move
-  minWeight: 20,         // Only consider moves with weight >= 20
-  maxDepth: 8            // Only use book for first 8 moves
+  randomize: false, // Always pick highest-weighted move
+  minWeight: 20, // Only consider moves with weight >= 20
+  maxDepth: 8, // Only use book for first 8 moves
 });
 ```
 
@@ -443,9 +434,9 @@ const server = new ApiServer({
   port: 3000,
   cors: {
     origin: '*',
-    credentials: true
+    credentials: true,
   },
-  compression: true
+  compression: true,
 });
 
 await server.start();
@@ -455,25 +446,30 @@ console.log('Chess API server running on http://localhost:3000');
 ### API Endpoints
 
 #### Health & Info
+
 - `GET /health` - Health check endpoint
 - `GET /version` - Get API version information
 
 #### Game Management
+
 - `POST /games` - Create a new game (optional: custom FEN)
 - `GET /games/:id` - Get game by ID
 - `GET /games` - List all games (supports pagination: `?page=1&limit=10`)
 - `DELETE /games/:id` - Delete a game
 
 #### Move Operations
+
 - `POST /games/:id/moves` - Make a move (`{ from, to, promotion? }`)
 - `GET /games/:id/moves` - Get move history
 - `POST /games/:id/undo` - Undo last move
 
 #### AI Operations
+
 - `POST /games/:id/ai-move` - Let AI make a move (`{ difficulty? }`)
 - `POST /games/:id/ai-hint` - Get AI move suggestion without making it
 
 #### Analysis & Export
+
 - `GET /games/:id/analysis` - Get position analysis
 - `GET /games/:id/legal-moves` - Get all legal moves (optional: `?square=e2`)
 - `POST /games/:id/fen` - Load position from FEN (`{ fen }`)
@@ -506,12 +502,12 @@ curl http://localhost:3000/games/{gameId}/pgn
 
 ```typescript
 interface ApiServerConfig {
-  port?: number;              // Server port (default: 3000)
-  host?: string;              // Host address (default: '0.0.0.0')
-  cors?: CorsOptions;         // CORS configuration
-  compression?: boolean;      // Enable gzip compression (default: true)
-  maxGames?: number;          // Max concurrent games (default: 1000)
-  requestTimeout?: number;    // Request timeout in ms (default: 30000)
+  port?: number; // Server port (default: 3000)
+  host?: string; // Host address (default: '0.0.0.0')
+  cors?: CorsOptions; // CORS configuration
+  compression?: boolean; // Enable gzip compression (default: true)
+  maxGames?: number; // Max concurrent games (default: 1000)
+  requestTimeout?: number; // Request timeout in ms (default: 30000)
 }
 ```
 
@@ -528,32 +524,32 @@ Main game controller class.
 ```typescript
 class Game {
   constructor(config?: GameConfig);
-  
+
   // Making moves
   move(moveOptions: MoveOptions): Move | null;
   undo(): Move | null;
-  
+
   // Getting legal moves
   getLegalMoves(): Move[];
   getLegalMovesFrom(square: Square): Move[];
-  
+
   // Game state
   getStatus(): GameStatus; // 'active' | 'check' | 'checkmate' | 'stalemate' | 'draw'
   getTurn(): Color; // 'white' | 'black'
   getHistory(): Move[];
   getBoard(): Board;
-  
+
   // Position information
   getPosition(): PositionData;
   getCastlingRights(): CastlingRights;
   getEnPassantSquare(): Square | null;
   getHalfMoveClock(): number;
   getFullMoveNumber(): number;
-  
+
   // FEN import/export
   loadFen(fen: string): void;
   getFen(): string;
-  
+
   // Utility
   reset(): void;
   refreshMoveGenerator(): void;
@@ -567,24 +563,24 @@ Board representation and piece manipulation.
 ```typescript
 class Board {
   constructor(initialBoard?: (Piece | null)[][]);
-  
+
   // Piece operations
   setupStartingPosition(): void;
   getPiece(square: Square): Piece | null;
   setPiece(square: Square, piece: Piece | null): void;
   movePiece(from: Square, to: Square): Piece | null;
-  
+
   // Square utilities
   squareToCoords(square: Square): Coordinates | null;
   coordsToSquare(row: number, col: number): Square | null;
   isValidSquare(square: Square): boolean;
   isEmpty(square: Square): boolean;
   isOccupiedBy(square: Square, color: Color): boolean;
-  
+
   // Finding pieces
   findPieces(color: Color): Array<{ square: Square; piece: Piece }>;
   findKing(color: Color): Square | null;
-  
+
   // Utility
   clone(): Board;
   clear(): void;
@@ -600,7 +596,7 @@ Parse and generate FEN notation.
 ```typescript
 class FenParser {
   static readonly STARTING_POSITION: Fen;
-  
+
   static parse(fen: Fen): {
     board: Board;
     turn: Color;
@@ -609,7 +605,7 @@ class FenParser {
     halfMoveClock: number;
     fullMoveNumber: number;
   };
-  
+
   static generate(
     board: Board,
     turn: Color,
@@ -618,7 +614,7 @@ class FenParser {
     halfMoveClock: number,
     fullMoveNumber: number
   ): Fen;
-  
+
   static validate(fen: Fen): boolean;
 }
 ```

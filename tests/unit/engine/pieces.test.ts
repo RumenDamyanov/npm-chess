@@ -3,12 +3,7 @@
  */
 
 import { Board } from '@/engine/board';
-import {
-  getPseudoLegalMoves,
-  isSquareUnderAttack,
-  isKingInCheck,
-} from '@/engine/pieces';
-import type { Coordinates } from '@/types/index';
+import { getPseudoLegalMoves, isSquareUnderAttack, isKingInCheck } from '@/engine/pieces';
 
 describe('Pieces', () => {
   let board: Board;

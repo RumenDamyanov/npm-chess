@@ -66,11 +66,7 @@ export class Game {
       this.recordPosition();
     }
 
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
   }
 
   /**
@@ -95,7 +91,7 @@ export class Game {
     // Handle special moves
     const isEnPassant = this.isEnPassantCapture(from, to);
     const isCastling = this.isCastlingMove(from, to);
-    
+
     // Build the move object
     const move: Move = {
       from,
@@ -103,8 +99,8 @@ export class Game {
       piece,
       captured: capturedPiece ?? undefined,
       promotion,
-      enPassant: isEnPassant || undefined,
-      castling: isCastling || undefined,
+      enPassant: isEnPassant ?? undefined,
+      castling: isCastling ?? undefined,
     };
 
     // Generate SAN notation before executing the move
@@ -121,12 +117,12 @@ export class Game {
 
     // Check game ending conditions
     this.updateGameStatus();
-    
+
     // Add check/checkmate indicators after game status is updated
     const opponent = this.currentTurn;
     const isCheck = isKingInCheck(this.board, opponent);
     const isCheckmate = this.gameStatus === 'checkmate';
-    
+
     if (isCheckmate) {
       san += '#';
       move.checkmate = true;
@@ -134,7 +130,7 @@ export class Game {
       san += '+';
       move.check = true;
     }
-    
+
     // Add SAN to the move
     move.san = san;
 
@@ -173,6 +169,7 @@ export class Game {
       return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const move = this.moveHistory.pop()!;
 
     // Restore the piece to its original position
@@ -214,11 +211,7 @@ export class Game {
     this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
 
     // Update move generator
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
 
     // Update game status
     this.updateGameStatus();
@@ -358,22 +351,14 @@ export class Game {
     this.gameStatus = 'active';
     this.positionHistory.clear();
     this.recordPosition();
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
   }
 
   /**
    * Refresh the move generator (useful after manual board changes)
    */
   public refreshMoveGenerator(): void {
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
     this.updateGameStatus();
   }
 
@@ -384,7 +369,7 @@ export class Game {
    */
   public loadFen(fen: string): void {
     const data = FenParser.parse(fen);
-    
+
     this.board = data.board;
     this.currentTurn = data.turn;
     this.castlingRights = data.castlingRights;
@@ -395,12 +380,8 @@ export class Game {
     this.gameStatus = 'active';
     this.positionHistory.clear();
     this.recordPosition();
-    
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
     this.updateGameStatus();
   }
 
@@ -521,11 +502,7 @@ export class Game {
     }
 
     // Update move generator with new state
-    this.moveGenerator = new MoveGenerator(
-      this.board,
-      this.castlingRights,
-      this.enPassantSquare
-    );
+    this.moveGenerator = new MoveGenerator(this.board, this.castlingRights, this.enPassantSquare);
   }
 
   /**
@@ -587,7 +564,7 @@ export class Game {
 
     // Check for threefold repetition
     const currentPosition = this.getPositionKey();
-    const repetitions = this.positionHistory.get(currentPosition) || 0;
+    const repetitions = this.positionHistory.get(currentPosition) ?? 0;
     if (repetitions >= 3) {
       this.gameStatus = 'threefold_repetition';
       return;
@@ -617,11 +594,7 @@ export class Game {
    */
   private isEnPassantCapture(from: Square, to: Square): boolean {
     const piece = this.board.getPiece(from);
-    return (
-      piece?.type === 'pawn' &&
-      to === this.enPassantSquare &&
-      this.enPassantSquare !== null
-    );
+    return piece?.type === 'pawn' && to === this.enPassantSquare && this.enPassantSquare !== null;
   }
 
   /**
@@ -649,7 +622,7 @@ export class Game {
    */
   private recordPosition(): void {
     const key = this.getPositionKey();
-    const count = this.positionHistory.get(key) || 0;
+    const count = this.positionHistory.get(key) ?? 0;
     this.positionHistory.set(key, count + 1);
   }
 
@@ -670,10 +643,7 @@ export class Game {
    * @returns True if insufficient material
    */
   private isInsufficientMaterial(): boolean {
-    const pieces = [
-      ...this.board.findPieces('white'),
-      ...this.board.findPieces('black'),
-    ];
+    const pieces = [...this.board.findPieces('white'), ...this.board.findPieces('black')];
 
     // King vs King
     if (pieces.length === 2) return true;
@@ -682,6 +652,7 @@ export class Game {
     if (pieces.length === 3) {
       const nonKings = pieces.filter((p) => p.piece.type !== 'king');
       if (nonKings.length === 1) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const pieceType = nonKings[0]!.piece.type;
         return pieceType === 'bishop' || pieceType === 'knight';
       }
@@ -691,7 +662,9 @@ export class Game {
     if (pieces.length === 4) {
       const bishops = pieces.filter((p) => p.piece.type === 'bishop');
       if (bishops.length === 2) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const coords1 = this.board.squareToCoords(bishops[0]!.square);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const coords2 = this.board.squareToCoords(bishops[1]!.square);
         if (coords1 && coords2) {
           // Same color square if (row + col) have same parity
@@ -753,7 +726,7 @@ export class Game {
         bishop: 'B',
         knight: 'N',
       };
-      san += pieceMap[move.piece.type] || '';
+      san += pieceMap[move.piece.type] ?? '';
     }
 
     // Disambiguation (if needed)
@@ -761,7 +734,7 @@ export class Game {
     san += disambiguation;
 
     // Capture notation
-    if (move.captured || move.enPassant) {
+    if (move.captured ?? move.enPassant) {
       if (move.piece.type === 'pawn') {
         san += move.from[0]; // Add file for pawn captures
       }
@@ -796,10 +769,7 @@ export class Game {
     // Find all pieces of the same type and color that can move to the destination
     const legalMoves = this.moveGenerator.generateLegalMoves(move.piece.color);
     const ambiguousMoves = legalMoves.filter(
-      (m) =>
-        m.to === move.to &&
-        m.piece.type === move.piece.type &&
-        m.from !== move.from
+      (m) => m.to === move.to && m.piece.type === move.piece.type && m.from !== move.from
     );
 
     if (ambiguousMoves.length === 0) {
@@ -811,7 +781,7 @@ export class Game {
     const sameFile = ambiguousMoves.some((m) => m.from[0] === fromFile);
 
     if (!sameFile) {
-      return fromFile || '';
+      return fromFile ?? '';
     }
 
     // Check if rank disambiguation is sufficient
@@ -819,7 +789,7 @@ export class Game {
     const sameRank = ambiguousMoves.some((m) => m.from[1] === fromRank);
 
     if (!sameRank) {
-      return fromRank || '';
+      return fromRank ?? '';
     }
 
     // Need both file and rank

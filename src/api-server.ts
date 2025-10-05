@@ -1,17 +1,19 @@
 /**
  * REST API Server for npm-chess
- * 
+ *
  * Provides HTTP API endpoints for game management, move execution,
  * and position analysis.
  */
 
-import express, { Express, Request, Response, NextFunction } from 'express';
+import type { Express, Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import { randomUUID } from 'crypto';
 import { Game } from './engine/game';
 import { PgnParser } from './engine/pgn';
 import type { AIDifficulty } from './ai/engine';
+import type { Square } from './types';
 import { MinimaxAI, createDefaultOpeningBook } from './ai';
 
 // Use crypto.randomUUID instead of uuid package to avoid ESM issues in Jest
@@ -68,17 +70,17 @@ export class ApiServer {
   private app: Express;
   private games: Map<string, Game>;
   private gameMetadata: Map<string, GameMetadata>;
-  
+
   constructor(config: ApiConfig = {}) {
     this.app = express();
     this.games = new Map();
     this.gameMetadata = new Map();
-    
+
     this.setupMiddleware(config);
     this.setupRoutes();
     this.setupErrorHandling();
   }
-  
+
   /**
    * Set up Express middleware
    */
@@ -86,92 +88,99 @@ export class ApiServer {
     // CORS
     const corsConfig = config.cors;
     if (corsConfig !== undefined) {
-      this.app.use(cors(corsConfig || {
-        origin: '*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization']
-      }));
+      this.app.use(
+        cors(
+          corsConfig || {
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+          }
+        )
+      );
     }
-    
+
     // Body parser
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    
+
     // Compression
     if (config.compression !== false) {
       this.app.use(compression());
     }
-    
+
     // Request logging (development)
     if (process.env['NODE_ENV'] !== 'production') {
       this.app.use((req, _res, next) => {
+        // eslint-disable-next-line no-console
         console.log(`${req.method} ${req.path}`);
         next();
       });
     }
   }
-  
+
   /**
    * Set up API routes
    */
   private setupRoutes(): void {
     const router = express.Router();
-    
+
     // Health & Info
     router.get('/health', this.getHealth.bind(this));
     router.get('/version', this.getVersion.bind(this));
-    
+
     // Game Management
     router.post('/games', this.createGame.bind(this));
     router.get('/games/:id', this.getGame.bind(this));
     router.get('/games', this.listGames.bind(this));
     router.delete('/games/:id', this.deleteGame.bind(this));
-    
+
     // Move Operations
     router.post('/games/:id/moves', this.makeMove.bind(this));
     router.get('/games/:id/moves', this.getMoveHistory.bind(this));
     router.post('/games/:id/undo', this.undoMove.bind(this));
-    
+
     // AI Operations
     router.post('/games/:id/ai-move', this.getAIMove.bind(this));
     router.post('/games/:id/ai-hint', this.getAIHint.bind(this));
-    
+
     // Analysis
     router.get('/games/:id/analysis', this.getAnalysis.bind(this));
     router.get('/games/:id/legal-moves', this.getLegalMoves.bind(this));
     router.post('/games/:id/fen', this.loadFromFEN.bind(this));
     router.get('/games/:id/pgn', this.getPGN.bind(this));
-    
+
     // Mount router
     this.app.use('/api/v1', router);
   }
-  
+
   /**
    * Set up error handling middleware
    */
   private setupErrorHandling(): void {
     // 404 handler
     this.app.use((req, res) => {
-      res.status(404).json(this.createErrorResponse(
-        'Not Found',
-        'ENDPOINT_NOT_FOUND',
-        `Endpoint ${req.method} ${req.path} not found`
-      ));
+      res
+        .status(404)
+        .json(
+          this.createErrorResponse(
+            'Not Found',
+            'ENDPOINT_NOT_FOUND',
+            `Endpoint ${req.method} ${req.path} not found`
+          )
+        );
     });
-    
+
     // Global error handler
     this.app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
       console.error('Server error:', err);
-      res.status(500).json(this.createErrorResponse(
-        'Internal Server Error',
-        'INTERNAL_ERROR',
-        err.message
-      ));
+      res
+        .status(500)
+        .json(this.createErrorResponse('Internal Server Error', 'INTERNAL_ERROR', err.message));
     });
   }
-  
+
   // ==================== ROUTE HANDLERS ====================
-  
+
   /**
    * GET /health - Health check
    */
@@ -180,10 +189,10 @@ export class ApiServer {
       status: 'ok',
       timestamp: new Date().toISOString(),
       version: '1.0.0',
-      gamesActive: this.games.size
+      gamesActive: this.games.size,
     });
   }
-  
+
   /**
    * GET /version - Version info
    */
@@ -191,32 +200,36 @@ export class ApiServer {
     res.json({
       api: '1.0.0',
       engine: '1.0.0',
-      node: process.version
+      node: process.version,
     });
   }
-  
+
   /**
    * POST /games - Create new game
    */
   private createGame(req: Request, res: Response): void {
     try {
       const { fen, aiEnabled, aiDifficulty, useOpeningBook } = req.body;
-      
+
       // Create game
       const game = new Game();
       if (fen) {
         try {
           game.loadFen(fen);
         } catch (error) {
-          res.status(400).json(this.createErrorResponse(
-            'Invalid FEN string',
-            'INVALID_FEN',
-            error instanceof Error ? error.message : 'Unknown error'
-          ));
+          res
+            .status(400)
+            .json(
+              this.createErrorResponse(
+                'Invalid FEN string',
+                'INVALID_FEN',
+                error instanceof Error ? error.message : 'Unknown error'
+              )
+            );
           return;
         }
       }
-      
+
       // Generate ID and store
       const gameId = uuidv4();
       this.games.set(gameId, game);
@@ -225,20 +238,24 @@ export class ApiServer {
         aiDifficulty: aiDifficulty || null,
         useOpeningBook: useOpeningBook !== false,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       });
-      
+
       // Return response
       res.status(201).json(this.gameToResponse(gameId, game));
     } catch (error) {
-      res.status(500).json(this.createErrorResponse(
-        'Failed to create game',
-        'INTERNAL_ERROR',
-        error instanceof Error ? error.message : 'Unknown error'
-      ));
+      res
+        .status(500)
+        .json(
+          this.createErrorResponse(
+            'Failed to create game',
+            'INTERNAL_ERROR',
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        );
     }
   }
-  
+
   /**
    * GET /games/:id - Get game state
    */
@@ -248,20 +265,24 @@ export class ApiServer {
       res.status(400).json(this.createErrorResponse('Missing game ID', 'MISSING_ID'));
       return;
     }
-    
+
     const game = this.games.get(id);
     if (!game) {
-      res.status(404).json(this.createErrorResponse(
-        'Game not found',
-        'GAME_NOT_FOUND',
-        `Game with ID ${id} does not exist`
-      ));
+      res
+        .status(404)
+        .json(
+          this.createErrorResponse(
+            'Game not found',
+            'GAME_NOT_FOUND',
+            `Game with ID ${id} does not exist`
+          )
+        );
       return;
     }
-    
+
     res.json(this.gameToResponse(id, game));
   }
-  
+
   /**
    * GET /games - List all games
    */
@@ -269,9 +290,9 @@ export class ApiServer {
     const limit = Math.min(parseInt(req.query['limit'] as string) || 20, 100);
     const offset = parseInt(req.query['offset'] as string) || 0;
     const status = req.query['status'] as string;
-    
+
     // Get all games
-    let games: Array<{ id: string, game: Game }> = [];
+    let games: Array<{ id: string; game: Game }> = [];
     for (const [id, game] of this.games.entries()) {
       if (status) {
         const isActive = !game.isGameOver();
@@ -280,19 +301,19 @@ export class ApiServer {
       }
       games.push({ id, game });
     }
-    
+
     // Apply pagination
     const total = games.length;
     games = games.slice(offset, offset + limit);
-    
+
     res.json({
       games: games.map(({ id, game }) => this.gameToResponse(id, game)),
       total,
       limit,
-      offset
+      offset,
     });
   }
-  
+
   /**
    * DELETE /games/:id - Delete game
    */
@@ -302,21 +323,18 @@ export class ApiServer {
       res.status(400).json(this.createErrorResponse('Missing game ID', 'MISSING_ID'));
       return;
     }
-    
+
     if (!this.games.has(id)) {
-      res.status(404).json(this.createErrorResponse(
-        'Game not found',
-        'GAME_NOT_FOUND'
-      ));
+      res.status(404).json(this.createErrorResponse('Game not found', 'GAME_NOT_FOUND'));
       return;
     }
-    
+
     this.games.delete(id);
     this.gameMetadata.delete(id);
-    
+
     res.status(204).send();
   }
-  
+
   /**
    * POST /games/:id/moves - Make a move
    */
@@ -335,31 +353,36 @@ export class ApiServer {
 
     const { from, to, promotion } = req.body;
     if (!from || !to) {
-      res.status(400).json(this.createErrorResponse(
-        'Missing required move parameters',
-        'INVALID_INPUT',
-        'Both "from" and "to" are required'
-      ));
+      res
+        .status(400)
+        .json(
+          this.createErrorResponse(
+            'Missing required move parameters',
+            'INVALID_INPUT',
+            'Both "from" and "to" are required'
+          )
+        );
       return;
     }
 
     // Check if game is over
     if (game.isGameOver()) {
-      res.status(409).json(this.createErrorResponse(
-        'Game is already over',
-        'GAME_OVER'
-      ));
+      res.status(409).json(this.createErrorResponse('Game is already over', 'GAME_OVER'));
       return;
     }
 
     // Make the move
     const move = game.move({ from, to, promotion });
     if (!move) {
-      res.status(400).json(this.createErrorResponse(
-        'Invalid move',
-        'INVALID_MOVE',
-        `Cannot move from ${from} to ${to}`
-      ));
+      res
+        .status(400)
+        .json(
+          this.createErrorResponse(
+            'Invalid move',
+            'INVALID_MOVE',
+            `Cannot move from ${from} to ${to}`
+          )
+        );
       return;
     }
 
@@ -372,7 +395,7 @@ export class ApiServer {
     // Return updated game state
     res.json(this.gameToResponse(id, game));
   }
-  
+
   /**
    * GET /games/:id/moves - Get move history
    */
@@ -389,19 +412,19 @@ export class ApiServer {
       return;
     }
 
-    const history = game.getHistory().map(move => ({
+    const history = game.getHistory().map((move) => ({
       from: move.from,
       to: move.to,
       piece: move.piece.type,
       capturedPiece: move.captured ? move.captured.type : null,
-      promotion: move.promotion || null,
-      san: move.san || '',
-      timestamp: new Date().toISOString()
+      promotion: move.promotion ?? null,
+      san: move.san ?? '',
+      timestamp: new Date().toISOString(),
     }));
 
     res.json({ moves: history });
   }
-  
+
   /**
    * POST /games/:id/undo - Undo last move
    */
@@ -420,11 +443,11 @@ export class ApiServer {
 
     const undoneMove = game.undo();
     if (!undoneMove) {
-      res.status(400).json(this.createErrorResponse(
-        'No moves to undo',
-        'NO_MOVES',
-        'The game has no moves to undo'
-      ));
+      res
+        .status(400)
+        .json(
+          this.createErrorResponse('No moves to undo', 'NO_MOVES', 'The game has no moves to undo')
+        );
       return;
     }
 
@@ -436,7 +459,7 @@ export class ApiServer {
 
     res.json(this.gameToResponse(id, game));
   }
-  
+
   /**
    * POST /games/:id/ai-move - Get AI move
    */
@@ -462,14 +485,14 @@ export class ApiServer {
       // Get AI configuration from request or game metadata
       const { difficulty, thinkingTime, useOpeningBook } = req.body;
       const metadata = this.gameMetadata.get(id);
-      
+
       const aiDifficulty: AIDifficulty = difficulty || metadata?.aiDifficulty || 'medium';
       const aiThinkingTime = thinkingTime || 5000;
-      const useBook = useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
+      const useBook =
+        useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
 
       // Use AI to find best move
       const startTime = Date.now();
-      let analysis;
       let openingName: string | undefined;
       let eco: string | undefined;
 
@@ -488,9 +511,9 @@ export class ApiServer {
       // Use AI engine to get best move
       const ai = new MinimaxAI({
         difficulty: aiDifficulty,
-        maxThinkingTime: aiThinkingTime
+        maxThinkingTime: aiThinkingTime,
       });
-      analysis = await ai.analyze(game);
+      const analysis = await ai.analyze(game);
       const aiMove = analysis.bestMove;
 
       const thinkingTimeActual = Date.now() - startTime;
@@ -498,11 +521,15 @@ export class ApiServer {
       // Make the move
       const executedMove = game.move(aiMove);
       if (!executedMove) {
-        res.status(500).json(this.createErrorResponse(
-          'AI move execution failed',
-          'AI_ERROR',
-          'The AI selected an invalid move'
-        ));
+        res
+          .status(500)
+          .json(
+            this.createErrorResponse(
+              'AI move execution failed',
+              'AI_ERROR',
+              'The AI selected an invalid move'
+            )
+          );
         return;
       }
 
@@ -521,18 +548,22 @@ export class ApiServer {
           nodesEvaluated: analysis?.nodesEvaluated || 0,
           evaluation: analysis?.score || 0,
           openingName,
-          eco
-        }
+          eco,
+        },
       });
     } catch (error) {
-      res.status(500).json(this.createErrorResponse(
-        'AI move generation failed',
-        'AI_ERROR',
-        error instanceof Error ? error.message : 'Unknown error'
-      ));
+      res
+        .status(500)
+        .json(
+          this.createErrorResponse(
+            'AI move generation failed',
+            'AI_ERROR',
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        );
     }
   }
-  
+
   /**
    * POST /games/:id/ai-hint - Get AI hint
    */
@@ -558,10 +589,11 @@ export class ApiServer {
       // Get AI configuration from request
       const { difficulty, thinkingTime, useOpeningBook } = req.body;
       const metadata = this.gameMetadata.get(id);
-      
+
       const aiDifficulty: AIDifficulty = difficulty || metadata?.aiDifficulty || 'medium';
       const aiThinkingTime = thinkingTime || 5000;
-      const useBook = useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
+      const useBook =
+        useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
 
       // Use AI to find best move
       const startTime = Date.now();
@@ -583,7 +615,7 @@ export class ApiServer {
       // Use AI engine to get best move
       const ai = new MinimaxAI({
         difficulty: aiDifficulty,
-        maxThinkingTime: aiThinkingTime
+        maxThinkingTime: aiThinkingTime,
       });
       const analysis = await ai.analyze(game);
       const suggestedMove = analysis.bestMove;
@@ -591,11 +623,14 @@ export class ApiServer {
       const thinkingTimeActual = Date.now() - startTime;
 
       // Generate explanation
-      let explanation = `Best move: ${suggestedMove.san || `${suggestedMove.from}-${suggestedMove.to}`}`;
+      let explanation = `Best move: ${suggestedMove.san ?? `${suggestedMove.from}-${suggestedMove.to}`}`;
       if (openingName) {
         explanation += ` (Opening: ${openingName})`;
       } else {
-        const scoreText = analysis.score > 0 ? `+${(analysis.score / 100).toFixed(2)}` : (analysis.score / 100).toFixed(2);
+        const scoreText =
+          analysis.score > 0
+            ? `+${(analysis.score / 100).toFixed(2)}`
+            : (analysis.score / 100).toFixed(2);
         explanation += ` (Evaluation: ${scoreText})`;
       }
 
@@ -605,7 +640,7 @@ export class ApiServer {
           from: suggestedMove.from,
           to: suggestedMove.to,
           promotion: suggestedMove.promotion,
-          san: suggestedMove.san
+          san: suggestedMove.san,
         },
         explanation,
         aiMetrics: {
@@ -615,18 +650,22 @@ export class ApiServer {
           nodesEvaluated: analysis?.nodesEvaluated || 0,
           evaluation: analysis?.score || 0,
           openingName,
-          eco
-        }
+          eco,
+        },
       });
     } catch (error) {
-      res.status(500).json(this.createErrorResponse(
-        'AI hint generation failed',
-        'AI_ERROR',
-        error instanceof Error ? error.message : 'Unknown error'
-      ));
+      res
+        .status(500)
+        .json(
+          this.createErrorResponse(
+            'AI hint generation failed',
+            'AI_ERROR',
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        );
     }
   }
-  
+
   /**
    * GET /games/:id/analysis - Get position analysis
    */
@@ -649,7 +688,7 @@ export class ApiServer {
 
       const ai = new MinimaxAI({
         difficulty,
-        maxThinkingTime: thinkingTime
+        maxThinkingTime: thinkingTime,
       });
 
       const analysis = await ai.analyze(game);
@@ -660,22 +699,28 @@ export class ApiServer {
           from: analysis.bestMove.from,
           to: analysis.bestMove.to,
           promotion: analysis.bestMove.promotion,
-          san: analysis.bestMove.san
+          san: analysis.bestMove.san,
         },
         depth: analysis.depth,
         nodesEvaluated: analysis.nodesEvaluated,
         thinkingTime: analysis.thinkingTime,
-        principalVariation: analysis.principalVariation?.slice(0, 5).map(move => move.san || `${move.from}-${move.to}`)
+        principalVariation: analysis.principalVariation
+          ?.slice(0, 5)
+          .map((move) => move.san ?? `${move.from}-${move.to}`),
       });
     } catch (error) {
-      res.status(500).json(this.createErrorResponse(
-        'Position analysis failed',
-        'AI_ERROR',
-        error instanceof Error ? error.message : 'Unknown error'
-      ));
+      res
+        .status(500)
+        .json(
+          this.createErrorResponse(
+            'Position analysis failed',
+            'AI_ERROR',
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        );
     }
   }
-  
+
   /**
    * GET /games/:id/legal-moves - Get legal moves
    */
@@ -693,25 +738,25 @@ export class ApiServer {
     }
 
     const from = req.query['from'] as string | undefined;
-    
+
     let moves;
     if (from) {
       // Get moves from specific square
-      moves = game.getLegalMovesFrom(from as any);
+      moves = game.getLegalMovesFrom(from as Square);
     } else {
       // Get all legal moves
       moves = game.getLegalMoves();
     }
 
-    const legalMoves = moves.map(move => ({
+    const legalMoves = moves.map((move) => ({
       from: move.from,
       to: move.to,
-      san: move.san || ''
+      san: move.san ?? '',
     }));
 
     res.json({ moves: legalMoves });
   }
-  
+
   /**
    * POST /games/:id/fen - Load from FEN
    */
@@ -730,17 +775,17 @@ export class ApiServer {
 
     const { fen } = req.body;
     if (!fen) {
-      res.status(400).json(this.createErrorResponse(
-        'Missing FEN string',
-        'INVALID_INPUT',
-        'FEN string is required'
-      ));
+      res
+        .status(400)
+        .json(
+          this.createErrorResponse('Missing FEN string', 'INVALID_INPUT', 'FEN string is required')
+        );
       return;
     }
 
     try {
       game.loadFen(fen);
-      
+
       // Update metadata
       const metadata = this.gameMetadata.get(id);
       if (metadata) {
@@ -749,14 +794,18 @@ export class ApiServer {
 
       res.json(this.gameToResponse(id, game));
     } catch (error) {
-      res.status(400).json(this.createErrorResponse(
-        'Invalid FEN string',
-        'INVALID_FEN',
-        error instanceof Error ? error.message : 'Unknown error'
-      ));
+      res
+        .status(400)
+        .json(
+          this.createErrorResponse(
+            'Invalid FEN string',
+            'INVALID_FEN',
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        );
     }
   }
-  
+
   /**
    * GET /games/:id/pgn - Get PGN
    */
@@ -776,32 +825,37 @@ export class ApiServer {
     // Generate PGN from move history
     const history = game.getHistory();
     const status = game.getStatus();
-    
+
     // PGN header
     let pgn = '[Event "Chess Game"]\n';
     pgn += `[Date "${new Date().toISOString().split('T')[0]}"]\n`;
     pgn += '[White "Player"]\n';
     pgn += '[Black "Player"]\n';
-    
+
     // Result
     let result = '*';
     if (status === 'checkmate') {
       result = game.getTurn() === 'white' ? '0-1' : '1-0';
-    } else if (status === 'stalemate' || status === 'fifty_move_rule' || status === 'threefold_repetition' || status === 'insufficient_material') {
+    } else if (
+      status === 'stalemate' ||
+      status === 'fifty_move_rule' ||
+      status === 'threefold_repetition' ||
+      status === 'insufficient_material'
+    ) {
       result = '1/2-1/2';
     }
     pgn += `[Result "${result}"]\n\n`;
-    
+
     // Moves
     let moveNumber = 1;
     for (let i = 0; i < history.length; i++) {
       const move = history[i];
       if (!move) continue;
-      
+
       if (i % 2 === 0) {
         pgn += `${moveNumber}. `;
       }
-      pgn += move.san || '';
+      pgn += move.san ?? '';
       if (i % 2 === 1) {
         pgn += ' ';
         moveNumber++;
@@ -814,24 +868,24 @@ export class ApiServer {
     res.setHeader('Content-Type', 'text/plain');
     res.send(pgn);
   }
-  
+
   // ==================== HELPER METHODS ====================
-  
+
   /**
    * Convert game to API response format
    */
   private gameToResponse(id: string, game: Game): GameResponse {
-    const metadata = this.gameMetadata.get(id) || {
+    const metadata = this.gameMetadata.get(id) ?? {
       aiEnabled: false,
       aiDifficulty: null,
       useOpeningBook: true,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     const status = game.getStatus();
     const turn = game.getTurn();
-    
+
     // Generate PGN with basic tags
     const dateStr = new Date().toISOString().split('T')[0];
     const pgn = PgnParser.generate(game, {
@@ -841,7 +895,7 @@ export class ApiServer {
       White: 'Player 1',
       Black: 'Player 2',
     });
-    
+
     return {
       id,
       fen: game.getFen(),
@@ -854,48 +908,44 @@ export class ApiServer {
       check: game.isInCheck(),
       inThreefoldRepetition: status === 'threefold_repetition',
       inFiftyMoveRule: status === 'fifty_move_rule',
-      moveHistory: game.getHistory().map(move => ({
+      moveHistory: game.getHistory().map((move) => ({
         from: move.from,
         to: move.to,
         piece: move.piece.type,
         capturedPiece: move.captured ? move.captured.type : null,
-        promotion: move.promotion || null,
-        san: move.san || '',
-        timestamp: new Date().toISOString()
+        promotion: move.promotion ?? null,
+        san: move.san ?? '',
+        timestamp: new Date().toISOString(),
       })),
       aiEnabled: metadata.aiEnabled,
       aiDifficulty: metadata.aiDifficulty,
       useOpeningBook: metadata.useOpeningBook,
       createdAt: metadata.createdAt.toISOString(),
-      updatedAt: metadata.updatedAt.toISOString()
+      updatedAt: metadata.updatedAt.toISOString(),
     };
   }
-  
+
   /**
    * Create error response
    */
-  private createErrorResponse(
-    error: string,
-    code: string,
-    details?: string
-  ): ErrorResponse {
+  private createErrorResponse(error: string, code: string, details?: string): ErrorResponse {
     return {
       error,
       code,
       details,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
-  
+
   // ==================== PUBLIC API ====================
-  
+
   /**
    * Start the API server
    */
   public listen(port: number, callback?: () => void): void {
     this.app.listen(port, callback);
   }
-  
+
   /**
    * Get Express app instance (for testing)
    */

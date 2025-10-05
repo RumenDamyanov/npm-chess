@@ -120,9 +120,7 @@ describe('ApiServer', () => {
 
     it('DELETE /games/:id - should delete a game', async () => {
       // Create a game to delete
-      const createRes = await request(app)
-        .post('/api/v1/games')
-        .send({});
+      const createRes = await request(app).post('/api/v1/games').send({});
       const idToDelete = createRes.body.id;
 
       const res = await request(app).delete(`/api/v1/games/${idToDelete}`);
@@ -145,9 +143,7 @@ describe('ApiServer', () => {
     let moveGameId: string;
 
     beforeEach(async () => {
-      const res = await request(app)
-        .post('/api/v1/games')
-        .send({});
+      const res = await request(app).post('/api/v1/games').send({});
       moveGameId = res.body.id;
     });
 
@@ -174,9 +170,7 @@ describe('ApiServer', () => {
     it('POST /games/:id/moves - should handle pawn promotion', async () => {
       // Set up position where pawn can promote
       const fenWithPromotion = '8/4P3/8/8/8/8/8/4K2k w - - 0 1';
-      const createRes = await request(app)
-        .post('/api/v1/games')
-        .send({ fen: fenWithPromotion });
+      const createRes = await request(app).post('/api/v1/games').send({ fen: fenWithPromotion });
       const promGameId = createRes.body.id;
 
       const res = await request(app)
@@ -189,9 +183,7 @@ describe('ApiServer', () => {
 
     it('GET /games/:id/moves - should return move history', async () => {
       // Make a move first
-      await request(app)
-        .post(`/api/v1/games/${moveGameId}/moves`)
-        .send({ from: 'e2', to: 'e4' });
+      await request(app).post(`/api/v1/games/${moveGameId}/moves`).send({ from: 'e2', to: 'e4' });
 
       const res = await request(app).get(`/api/v1/games/${moveGameId}/moves`);
 
@@ -202,9 +194,7 @@ describe('ApiServer', () => {
 
     it('POST /games/:id/undo - should undo last move', async () => {
       // Make a move
-      await request(app)
-        .post(`/api/v1/games/${moveGameId}/moves`)
-        .send({ from: 'e2', to: 'e4' });
+      await request(app).post(`/api/v1/games/${moveGameId}/moves`).send({ from: 'e2', to: 'e4' });
 
       const res = await request(app).post(`/api/v1/games/${moveGameId}/undo`);
 
@@ -265,9 +255,7 @@ describe('ApiServer', () => {
     let analysisGameId: string;
 
     beforeEach(async () => {
-      const res = await request(app)
-        .post('/api/v1/games')
-        .send({});
+      const res = await request(app).post('/api/v1/games').send({});
       analysisGameId = res.body.id;
 
       // Make a move for analysis
@@ -304,6 +292,7 @@ describe('ApiServer', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.moves.length).toBeGreaterThan(0);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       res.body.moves.forEach((move: any) => {
         expect(move.from).toBe('b8');
       });
@@ -348,9 +337,7 @@ describe('ApiServer', () => {
     });
 
     it('should handle missing required parameters', async () => {
-      const res = await request(app)
-        .post(`/api/v1/games/${gameId}/moves`)
-        .send({});
+      const res = await request(app).post(`/api/v1/games/${gameId}/moves`).send({});
 
       expect(res.status).toBe(400);
       expect(res.body.code).toBe('INVALID_INPUT');
@@ -359,9 +346,7 @@ describe('ApiServer', () => {
     it('should prevent moves on completed games', async () => {
       // Create game in checkmate position
       const matePos = 'rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3';
-      const createRes = await request(app)
-        .post('/api/v1/games')
-        .send({ fen: matePos });
+      const createRes = await request(app).post('/api/v1/games').send({ fen: matePos });
       const mateGameId = createRes.body.id;
 
       const res = await request(app)

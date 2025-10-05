@@ -3,6 +3,7 @@
  *
  * Tests for importing/exporting games using FEN and PGN formats.
  */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { describe, expect, it } from '@jest/globals';
 import { Game } from '@/engine/game';
@@ -15,7 +16,7 @@ describe('FEN and PGN Integration', () => {
     it('should import FEN and play moves', () => {
       const fen: Fen = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1';
       const parsed = FenParser.parse(fen);
-      
+
       expect(parsed.turn).toBe('black');
       expect(parsed.enPassantSquare).toBe('e3');
       expect(parsed.board.getPiece('e4')?.type).toBe('pawn');
@@ -23,11 +24,11 @@ describe('FEN and PGN Integration', () => {
 
     it('should export game to FEN after moves', () => {
       const game = new Game();
-      
+
       game.move({ from: 'e2', to: 'e4' });
       game.move({ from: 'e7', to: 'e5' });
       game.move({ from: 'g1', to: 'f3' });
-      
+
       const fen = FenParser.generate(
         game.getBoard(),
         game.getTurn(),
@@ -36,7 +37,7 @@ describe('FEN and PGN Integration', () => {
         game.getHalfMoveClock(),
         game.getFullMoveNumber()
       );
-      
+
       expect(fen).toContain('rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R');
       expect(fen).toContain('b KQkq -');
     });
@@ -48,7 +49,7 @@ describe('FEN and PGN Integration', () => {
         'r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1',
         '8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1',
       ];
-      
+
       for (const fen of positions) {
         const parsed = FenParser.parse(fen);
         const generated = FenParser.generate(
@@ -66,11 +67,11 @@ describe('FEN and PGN Integration', () => {
     it('should load position from FEN and continue playing', () => {
       const fen: Fen = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2';
       const parsed = FenParser.parse(fen);
-      
+
       // Verify FEN was parsed correctly
       expect(parsed.turn).toBe('white');
       expect(parsed.enPassantSquare).toBe('e6');
-      
+
       // Verify pieces are in correct positions
       expect(parsed.board.getPiece('e4')?.type).toBe('pawn');
       expect(parsed.board.getPiece('e4')?.color).toBe('white');
@@ -92,7 +93,7 @@ describe('FEN and PGN Integration', () => {
 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O 1-0`;
 
       const game = PgnParser.loadGame(pgn);
-      
+
       expect(game).not.toBeNull();
       expect(game?.getHistory()).toHaveLength(9);
       expect(game?.getBoard().getPiece('g1')?.type).toBe('king');
@@ -101,18 +102,18 @@ describe('FEN and PGN Integration', () => {
 
     it('should export game to PGN', () => {
       const game = new Game();
-      
+
       game.move({ from: 'e2', to: 'e4' });
       game.move({ from: 'e7', to: 'e5' });
       game.move({ from: 'g1', to: 'f3' });
       game.move({ from: 'b8', to: 'c6' });
-      
+
       const pgn = PgnParser.generate(game, {
         Event: 'Test Game',
         White: 'Player 1',
         Black: 'Player 2',
       });
-      
+
       expect(pgn).toContain('[Event "Test Game"]');
       expect(pgn).toContain('[White "Player 1"]');
       expect(pgn).toContain('[Black "Player 2"]');
@@ -121,24 +122,28 @@ describe('FEN and PGN Integration', () => {
 
     it('should round-trip game through PGN', () => {
       const game1 = new Game();
-      
+
       const moves = [
-        { from: 'e2', to: 'e4' }, { from: 'c7', to: 'c5' },
-        { from: 'g1', to: 'f3' }, { from: 'd7', to: 'd6' },
-        { from: 'd2', to: 'd4' }, { from: 'c5', to: 'd4' },
-        { from: 'f3', to: 'd4' }, { from: 'g8', to: 'f6' },
+        { from: 'e2', to: 'e4' },
+        { from: 'c7', to: 'c5' },
+        { from: 'g1', to: 'f3' },
+        { from: 'd7', to: 'd6' },
+        { from: 'd2', to: 'd4' },
+        { from: 'c5', to: 'd4' },
+        { from: 'f3', to: 'd4' },
+        { from: 'g8', to: 'f6' },
       ];
-      
+
       for (const move of moves) {
         game1.move(move);
       }
-      
+
       const pgn = PgnParser.generate(game1);
       const game2 = PgnParser.loadGame(pgn);
-      
+
       expect(game2).not.toBeNull();
       expect(game2?.getHistory()).toHaveLength(game1.getHistory().length);
-      
+
       // Compare final positions
       const squares = ['e4', 'f3', 'd4', 'f6', 'd6'];
       for (const square of squares) {
@@ -174,7 +179,7 @@ describe('FEN and PGN Integration', () => {
 
       const game1 = PgnParser.loadGame(pgn1);
       const game2 = PgnParser.loadGame(pgn2);
-      
+
       expect(game1).not.toBeNull();
       expect(game2).not.toBeNull();
       expect(game1?.getHistory()).toHaveLength(5);
@@ -185,7 +190,7 @@ describe('FEN and PGN Integration', () => {
       const game = new Game();
       game.move({ from: 'e2', to: 'e4' });
       game.move({ from: 'e7', to: 'e5' });
-      
+
       const tags = {
         Event: 'World Championship',
         Site: 'New York',
@@ -195,10 +200,10 @@ describe('FEN and PGN Integration', () => {
         Black: 'Nepomniachtchi, Ian',
         Result: '*',
       };
-      
+
       const pgn = PgnParser.generate(game, tags);
       const parsed = PgnParser.parse(pgn);
-      
+
       expect(parsed.tags.Event).toBe('World Championship');
       expect(parsed.tags.Site).toBe('New York');
       expect(parsed.tags.White).toBe('Carlsen, Magnus');
@@ -210,23 +215,23 @@ describe('FEN and PGN Integration', () => {
     it('should load FEN, play moves, and export to PGN', () => {
       // Start from a regular game position
       const game = new Game();
-      
+
       // Play to a known position
       game.move({ from: 'e2', to: 'e4' });
       game.move({ from: 'e7', to: 'e5' });
       game.move({ from: 'g1', to: 'f3' });
       game.move({ from: 'b8', to: 'c6' });
-      
+
       // Play additional moves
       game.move({ from: 'f1', to: 'c4' });
       game.move({ from: 'f8', to: 'c5' });
-      
+
       // Export to PGN
       const pgn = PgnParser.generate(game, {
         Event: 'From FEN',
         Result: '*',
       });
-      
+
       expect(pgn).toContain('[Event "From FEN"]');
       expect(pgn).toContain('Bc4');
       expect(pgn).toContain('Bc5');
@@ -247,7 +252,7 @@ describe('FEN and PGN Integration', () => {
 
       const game = PgnParser.loadGame(pgn);
       expect(game).not.toBeNull();
-      
+
       const fen = FenParser.generate(
         game!.getBoard(),
         game!.getTurn(),
@@ -256,7 +261,7 @@ describe('FEN and PGN Integration', () => {
         game!.getHalfMoveClock(),
         game!.getFullMoveNumber()
       );
-      
+
       expect(fen).toContain('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R');
     });
   });
@@ -264,7 +269,7 @@ describe('FEN and PGN Integration', () => {
   describe('Error Handling', () => {
     it('should handle invalid FEN gracefully', () => {
       const invalidFen: Fen = 'invalid fen string';
-      
+
       expect(() => FenParser.parse(invalidFen)).toThrow();
     });
 
@@ -272,7 +277,7 @@ describe('FEN and PGN Integration', () => {
       const invalidPgn: Pgn = `[Event "Test"]
 
 1. e4 Nf6 2. Nxf6 *`; // Invalid: can't capture Nf6
-      
+
       const game = PgnParser.loadGame(invalidPgn);
       expect(game).toBeNull();
     });
@@ -286,9 +291,9 @@ describe('FEN and PGN Integration', () => {
       const validPgn: Pgn = `[Event "Test"]
 
 1. e4 e5 *`;
-      
+
       const invalidPgn: Pgn = '';
-      
+
       expect(PgnParser.validate(validPgn)).toBe(true);
       expect(PgnParser.validate(invalidPgn)).toBe(true); // Empty PGN is technically valid
     });
@@ -303,12 +308,12 @@ describe('FEN and PGN Integration', () => {
       game1.getBoard().setPiece('h8', { type: 'king', color: 'black' });
       game1.getBoard().setPiece('a7', { type: 'pawn', color: 'white' });
       game1.refreshMoveGenerator();
-      
+
       const promotionQueen = game1.move({ from: 'a7', to: 'a8', promotion: 'queen' });
       expect(promotionQueen).not.toBeNull();
       expect(promotionQueen?.promotion).toBe('queen');
       expect(game1.getBoard().getPiece('a8')?.type).toBe('queen');
-      
+
       // Test promotion to knight
       const game2 = new Game();
       game2.getBoard().clear();
@@ -316,7 +321,7 @@ describe('FEN and PGN Integration', () => {
       game2.getBoard().setPiece('h8', { type: 'king', color: 'black' });
       game2.getBoard().setPiece('b7', { type: 'pawn', color: 'white' });
       game2.refreshMoveGenerator();
-      
+
       const promotionKnight = game2.move({ from: 'b7', to: 'b8', promotion: 'knight' });
       expect(promotionKnight).not.toBeNull();
       expect(promotionKnight?.promotion).toBe('knight');
@@ -325,7 +330,7 @@ describe('FEN and PGN Integration', () => {
 
     it('should handle long games with many moves', () => {
       const game = new Game();
-      
+
       // Play 50 moves
       for (let i = 0; i < 25; i++) {
         game.move({ from: 'g1', to: 'f3' });
@@ -333,7 +338,7 @@ describe('FEN and PGN Integration', () => {
         game.move({ from: 'f3', to: 'g1' });
         game.move({ from: 'f6', to: 'g8' });
       }
-      
+
       expect(game.getHistory()).toHaveLength(100);
       expect(game.getFullMoveNumber()).toBe(51);
     });
@@ -341,10 +346,10 @@ describe('FEN and PGN Integration', () => {
     it('should handle position with all piece types', () => {
       const fen: Fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
       const parsed = FenParser.parse(fen);
-      
+
       const pieces = parsed.board.findPieces('white');
       const pieceTypes = new Set(pieces.map((p: { piece: { type: string } }) => p.piece.type));
-      
+
       expect(pieceTypes.has('king')).toBe(true);
       expect(pieceTypes.has('queen')).toBe(true);
       expect(pieceTypes.has('rook')).toBe(true);

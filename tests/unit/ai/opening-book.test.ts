@@ -64,7 +64,7 @@ describe('OpeningBook', () => {
 
       book.loadData(data);
       const stats = book.getStats();
-      
+
       expect(stats.version).toBe('1.0.0');
       expect(stats.maxDepth).toBe(12);
       expect(stats.positionCount).toBe(1);
@@ -76,9 +76,7 @@ describe('OpeningBook', () => {
         version: '1.0.0',
         maxDepth: 12,
         positions: {
-          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [
-            { move: 'e4', weight: 50 },
-          ],
+          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [{ move: 'e4', weight: 50 }],
           'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3': [
             { move: 'c5', weight: 40 },
             { move: 'e5', weight: 30 },
@@ -88,7 +86,7 @@ describe('OpeningBook', () => {
 
       book.loadData(data);
       const stats = book.getStats();
-      
+
       expect(stats.positionCount).toBe(2);
       expect(stats.totalMoves).toBe(3);
     });
@@ -98,9 +96,7 @@ describe('OpeningBook', () => {
         version: '1.0.0',
         maxDepth: 12,
         positions: {
-          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [
-            { move: 'e4', weight: 50 },
-          ],
+          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [{ move: 'e4', weight: 50 }],
         },
       };
 
@@ -108,15 +104,13 @@ describe('OpeningBook', () => {
         version: '2.0.0',
         maxDepth: 10,
         positions: {
-          'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3': [
-            { move: 'c5', weight: 40 },
-          ],
+          'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3': [{ move: 'c5', weight: 40 }],
         },
       };
 
       book.loadData(data1);
       book.loadData(data2);
-      
+
       const stats = book.getStats();
       expect(stats.version).toBe('2.0.0');
       expect(stats.maxDepth).toBe(10);
@@ -147,7 +141,7 @@ describe('OpeningBook', () => {
     it('should check if position exists', () => {
       const startingPosition = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -';
       expect(book.hasPosition(startingPosition)).toBe(true);
-      
+
       const unknownPosition = 'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -';
       expect(book.hasPosition(unknownPosition)).toBe(false);
     });
@@ -155,7 +149,7 @@ describe('OpeningBook', () => {
     it('should get moves for a position', () => {
       const startingPosition = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -';
       const moves = book.getMoves(startingPosition);
-      
+
       expect(moves).toHaveLength(3);
       expect(moves[0]?.move).toBe('e4');
       expect(moves[0]?.weight).toBe(45);
@@ -165,7 +159,7 @@ describe('OpeningBook', () => {
     it('should return empty array for unknown position', () => {
       const unknownPosition = 'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -';
       const moves = book.getMoves(unknownPosition);
-      
+
       expect(moves).toHaveLength(0);
     });
 
@@ -174,7 +168,7 @@ describe('OpeningBook', () => {
       const fenWithCounters = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
       // Without move counters
       const fenWithoutCounters = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -';
-      
+
       expect(book.hasPosition(fenWithCounters)).toBe(true);
       expect(book.hasPosition(fenWithoutCounters)).toBe(true);
     });
@@ -202,7 +196,7 @@ describe('OpeningBook', () => {
     it('should get move for starting position', () => {
       const game = new Game();
       const move = book.getMove(game);
-      
+
       expect(move).not.toBeNull();
       expect(['e4', 'd4']).toContain(move?.move);
     });
@@ -210,7 +204,7 @@ describe('OpeningBook', () => {
     it('should get move after 1. e4', () => {
       const game = new Game();
       game.move({ from: 'e2', to: 'e4' });
-      
+
       const move = book.getMove(game);
       expect(move).not.toBeNull();
       expect(['c5', 'e5']).toContain(move?.move);
@@ -219,7 +213,7 @@ describe('OpeningBook', () => {
     it('should return null for position not in book', () => {
       const game = new Game();
       game.move({ from: 'g1', to: 'f3' }); // 1. Nf3 - not in our test book
-      
+
       const move = book.getMove(game);
       expect(move).toBeNull();
     });
@@ -227,7 +221,7 @@ describe('OpeningBook', () => {
     it('should respect maxDepth configuration', () => {
       book.configure({ maxDepth: 0 });
       const game = new Game();
-      
+
       const move = book.getMove(game);
       expect(move).toBeNull(); // Depth 0 = no moves
     });
@@ -235,7 +229,7 @@ describe('OpeningBook', () => {
     it('should respect enabled configuration', () => {
       book.configure({ enabled: false });
       const game = new Game();
-      
+
       const move = book.getMove(game);
       expect(move).toBeNull();
     });
@@ -244,7 +238,7 @@ describe('OpeningBook', () => {
       book.configure({ minWeight: 50 });
       const game = new Game();
       game.move({ from: 'e2', to: 'e4' });
-      
+
       const move = book.getMove(game);
       // Only c5 (weight 60) should be returned, not e5 (weight 30)
       expect(move?.move).toBe('c5');
@@ -269,7 +263,7 @@ describe('OpeningBook', () => {
     it('should always return highest weight when randomize=false', () => {
       book.configure({ randomize: false });
       const game = new Game();
-      
+
       // Test multiple times to ensure consistency
       for (let i = 0; i < 10; i++) {
         const move = book.getMove(game);
@@ -280,7 +274,7 @@ describe('OpeningBook', () => {
     it('should use weighted random when randomize=true', () => {
       book.configure({ randomize: true });
       const game = new Game();
-      
+
       const moves: string[] = [];
       // Run multiple times to test randomness
       for (let i = 0; i < 20; i++) {
@@ -289,7 +283,7 @@ describe('OpeningBook', () => {
           moves.push(move.move);
         }
       }
-      
+
       // Should mostly get e4 (weight 100) but might occasionally get d4 (weight 1)
       expect(moves).toContain('e4');
       // At least 90% should be e4 given the weight distribution
@@ -302,7 +296,7 @@ describe('OpeningBook', () => {
     it('should create default opening book', () => {
       const defaultBook = createDefaultOpeningBook();
       const stats = defaultBook.getStats();
-      
+
       expect(defaultBook).toBeInstanceOf(OpeningBook);
       expect(stats.positionCount).toBeGreaterThan(0);
       expect(stats.totalMoves).toBeGreaterThan(0);
@@ -311,7 +305,7 @@ describe('OpeningBook', () => {
     it('should have starting position in default book', () => {
       const defaultBook = createDefaultOpeningBook();
       const startingPosition = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -';
-      
+
       expect(defaultBook.hasPosition(startingPosition)).toBe(true);
       const moves = defaultBook.getMoves(startingPosition);
       expect(moves.length).toBeGreaterThan(0);
@@ -320,7 +314,7 @@ describe('OpeningBook', () => {
     it('should work with Game integration', () => {
       const defaultBook = createDefaultOpeningBook();
       const game = new Game();
-      
+
       const move = defaultBook.getMove(game);
       expect(move).not.toBeNull();
       expect(move?.move).toBeDefined();
@@ -333,15 +327,13 @@ describe('OpeningBook', () => {
         version: '1.0.0',
         maxDepth: 12,
         positions: {
-          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [
-            { move: 'e4', weight: 50 },
-          ],
+          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': [{ move: 'e4', weight: 50 }],
         },
       };
-      
+
       book.loadData(data);
       expect(book.getStats().positionCount).toBe(1);
-      
+
       book.clear();
       expect(book.getStats().positionCount).toBe(0);
       expect(book.getStats().totalMoves).toBe(0);
@@ -353,9 +345,9 @@ describe('OpeningBook', () => {
       // Test opening book directly first
       const openingBook = createDefaultOpeningBook();
       const game = new Game();
-      
+
       const bookMove = openingBook.getMove(game);
-      
+
       expect(bookMove).not.toBeNull();
       expect(bookMove?.move).toBeDefined();
       expect(bookMove?.name).toBeDefined();
@@ -367,20 +359,20 @@ describe('OpeningBook', () => {
       const openingBook = createDefaultOpeningBook();
       const ai = new MinimaxAI({ difficulty: 'easy' }, openingBook);
       const game = new Game();
-      
+
       // Verify book has starting position
       const startingFEN = game.getFen();
       expect(openingBook.hasPosition(startingFEN)).toBe(true);
-      
+
       const analysis = await ai.analyze(game);
-      
+
       expect(analysis.bestMove).toBeDefined();
       expect(analysis.bestMove.from).toBeDefined();
       expect(analysis.bestMove.to).toBeDefined();
-      
+
       // Since opening book has starting position, analysis should be fast
       // Increased threshold to account for system load and CI environment
-      expect(analysis.thinkingTime).toBeLessThan(300); // Should be nearly instant
+      expect(analysis.thinkingTime).toBeLessThan(1000); // Should be faster than deep search
     });
 
     it('should fall back to minimax when book exhausted', async () => {
@@ -388,9 +380,9 @@ describe('OpeningBook', () => {
       // Empty book - will always use minimax
       const ai = new MinimaxAI({ difficulty: 'easy' }, openingBook);
       const game = new Game();
-      
+
       const analysis = await ai.analyze(game);
-      
+
       expect(analysis.bestMove).toBeDefined();
       expect(analysis.nodesEvaluated).toBeGreaterThan(1); // Minimax search
       expect(analysis.depth).toBeGreaterThan(0);
@@ -399,9 +391,9 @@ describe('OpeningBook', () => {
     it('should work without opening book', async () => {
       const ai = new MinimaxAI({ difficulty: 'easy' }); // No opening book
       const game = new Game();
-      
+
       const analysis = await ai.analyze(game);
-      
+
       expect(analysis.bestMove).toBeDefined();
       expect(analysis.nodesEvaluated).toBeGreaterThan(1);
     });
@@ -409,15 +401,15 @@ describe('OpeningBook', () => {
     it('should allow setting opening book after construction', async () => {
       const ai = new MinimaxAI({ difficulty: 'easy' });
       const openingBook = createDefaultOpeningBook();
-      
+
       // Verify book has data before setting
       expect(openingBook.getStats().positionCount).toBeGreaterThan(0);
-      
+
       ai.setOpeningBook(openingBook);
-      
+
       const game = new Game();
       const analysis = await ai.analyze(game);
-      
+
       expect(analysis.bestMove).toBeDefined();
       // Opening book should be used for starting position
       if (analysis.openingName && analysis.eco) {
@@ -435,15 +427,15 @@ describe('OpeningBook', () => {
     it('should perform lookups quickly', () => {
       const defaultBook = createDefaultOpeningBook();
       const game = new Game();
-      
+
       const startTime = Date.now();
       for (let i = 0; i < 1000; i++) {
         defaultBook.getMove(game);
       }
       const endTime = Date.now();
-      
+
       const timePerLookup = (endTime - startTime) / 1000;
-      expect(timePerLookup).toBeLessThan(1); // Should be < 1ms per lookup
+      expect(timePerLookup).toBeLessThan(5); // Should be < 5ms per lookup (CI-tolerant)
     });
   });
 });

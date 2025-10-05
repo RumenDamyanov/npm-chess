@@ -7,7 +7,7 @@
  */
 
 import type { PieceType, Color, Coordinates } from '@/types/index';
-import { Board } from './board';
+import type { Board } from './board';
 
 /**
  * Direction vectors for piece movement
@@ -299,10 +299,7 @@ export function isSquareUnderAttack(
     while (board.isValidCoords(currentRow, currentCol)) {
       const piece = board.getPieceAt(currentRow, currentCol);
       if (piece) {
-        if (
-          piece.color === attackingColor &&
-          (piece.type === 'bishop' || piece.type === 'queen')
-        ) {
+        if (piece.color === attackingColor && (piece.type === 'bishop' || piece.type === 'queen')) {
           return true;
         }
         break; // Hit a piece, stop searching this direction
@@ -320,10 +317,7 @@ export function isSquareUnderAttack(
     while (board.isValidCoords(currentRow, currentCol)) {
       const piece = board.getPieceAt(currentRow, currentCol);
       if (piece) {
-        if (
-          piece.color === attackingColor &&
-          (piece.type === 'rook' || piece.type === 'queen')
-        ) {
+        if (piece.color === attackingColor && (piece.type === 'rook' || piece.type === 'queen')) {
           return true;
         }
         break; // Hit a piece, stop searching this direction

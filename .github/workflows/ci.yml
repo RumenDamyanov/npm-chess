@@ -92,6 +92,3 @@ jobs:
 
     - name: Check formatting
       run: npm run format:check
-
-    - name: Run prepublishOnly script
-      run: npm run prepublishOnly

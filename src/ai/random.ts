@@ -13,7 +13,7 @@ import { mergeConfig } from './engine';
 
 /**
  * Random AI Engine
- * 
+ *
  * Picks a random legal move from the available moves.
  * Optionally can use basic evaluation to avoid obviously bad moves.
  */
@@ -46,6 +46,7 @@ export class RandomAI implements AIEngine {
 
     // Simple random selection
     const randomIndex = Math.floor(Math.random() * legalMoves.length);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const move = legalMoves[randomIndex]!;
 
     // Simulate some "thinking time" to make it feel more natural
@@ -74,6 +75,7 @@ export class RandomAI implements AIEngine {
 
     // Pick random move
     const randomIndex = Math.floor(Math.random() * legalMoves.length);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const bestMove = legalMoves[randomIndex]!;
 
     const thinkingTime = Date.now() - startTime;

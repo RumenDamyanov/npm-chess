@@ -15,14 +15,7 @@
  * @module engine/fen
  */
 
-import type {
-  Piece,
-  PieceType,
-  Color,
-  Square,
-  CastlingRights,
-  Fen,
-} from '@/types/index';
+import type { Piece, PieceType, Color, Square, CastlingRights, Fen } from '@/types/index';
 import { Board } from './board';
 
 /**
@@ -56,14 +49,14 @@ export class FenParser {
       throw new Error(`Invalid FEN: expected 6 parts, got ${parts.length}`);
     }
 
-    const [
-      piecePlacement,
-      activeColor,
-      castling,
-      enPassant,
-      halfMove,
-      fullMove,
-    ] = parts as [string, string, string, string, string, string];
+    const [piecePlacement, activeColor, castling, enPassant, halfMove, fullMove] = parts as [
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+    ];
 
     // Parse piece placement
     const board = this.parsePiecePlacement(piecePlacement);
@@ -122,7 +115,7 @@ export class FenParser {
     parts.push(this.generateCastlingRights(castlingRights));
 
     // Generate en passant
-    parts.push(enPassantSquare || '-');
+    parts.push(enPassantSquare ?? '-');
 
     // Generate clocks
     parts.push(halfMoveClock.toString());
@@ -146,6 +139,7 @@ export class FenParser {
     }
 
     for (let rankIndex = 0; rankIndex < 8; rankIndex++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const rank = ranks[rankIndex]!;
       let fileIndex = 0;
 

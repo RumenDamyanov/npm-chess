@@ -1,6 +1,7 @@
 /**
  * Board class tests
  */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { Board } from '@/engine/board';
 import type { Piece } from '@/types/index';
@@ -45,7 +46,7 @@ describe('Board', () => {
       expect(board.getPiece('h1')).toEqual({ type: 'rook', color: 'white' });
 
       // Check white pawns
-      for (let file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) {
+      for (const file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) {
         expect(board.getPiece(`${file}2`)).toEqual({ type: 'pawn', color: 'white' });
       }
 
@@ -57,7 +58,7 @@ describe('Board', () => {
       expect(board.getPiece('e8')).toEqual({ type: 'king', color: 'black' });
 
       // Check black pawns
-      for (let file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) {
+      for (const file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) {
         expect(board.getPiece(`${file}7`)).toEqual({ type: 'pawn', color: 'black' });
       }
 

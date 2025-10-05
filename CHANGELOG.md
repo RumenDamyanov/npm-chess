@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Core Chess Engine ♟️
+
 - Complete implementation of chess rules and game logic
 - All piece movements (pawns, knights, bishops, rooks, queens, kings)
 - Special moves: castling (kingside/queenside), en passant, pawn promotion
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Castling rights management
 
 #### FEN & PGN Support 📝
+
 - FEN (Forsyth-Edwards Notation) parser and generator
 - FEN validation and position import/export
 - PGN (Portable Game Notation) parser and generator
@@ -40,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Game metadata handling
 
 #### AI Opponents 🤖
+
 - **Random AI**: Simple baseline opponent for testing
 - **Minimax AI**: Competitive play with alpha-beta pruning
 - **Six Difficulty Levels**:
@@ -61,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Move ordering for better pruning
 
 #### Opening Book System 📖
+
 - Professional opening theory database
 - 40+ positions covering 14 major opening systems:
   - Italian Game, Ruy Lopez, Sicilian Defense
@@ -79,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Opening statistics and analytics
 
 #### REST API Server 🌐
+
 - **14 RESTful Endpoints** for complete game management:
   - Health check and version info
   - Game lifecycle (create, get, list, delete)
@@ -98,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move validation with error messages
 
 #### TypeScript Support 🔒
+
 - Full TypeScript implementation with strict mode
 - Comprehensive type definitions for all chess entities
 - Type-safe API with IntelliSense support
@@ -106,6 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type guards for runtime safety
 
 #### Testing & Quality 🧪
+
 - **326 comprehensive tests** (100% pass rate):
   - 236 unit tests (engine, AI, opening book)
   - 90 integration tests (game scenarios, API endpoints)
@@ -125,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated test runs on all commits
 
 #### Documentation 📖
+
 - Comprehensive README with examples
 - JSDoc comments on all public APIs
 - 5 detailed usage examples:
@@ -143,6 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Security policy
 
 #### Development Infrastructure 🏗️
+
 - Dual module system (ESM + CommonJS)
 - TypeScript configuration for multiple targets
 - Jest testing framework with ts-jest

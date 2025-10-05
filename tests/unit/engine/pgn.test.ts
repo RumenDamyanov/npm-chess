@@ -391,7 +391,7 @@ describe('PgnParser', () => {
       expect(game).toBeNull();
     });
 
-    it('should load Scholar\'s Mate', () => {
+    it("should load Scholar's Mate", () => {
       const pgn: Pgn = `[Event "Scholar's Mate"]
 [Site "Test"]
 [Date "2024.01.01"]
@@ -447,7 +447,7 @@ describe('PgnParser', () => {
     it('should maintain game state through generate/load cycle with single move', () => {
       const game1 = new Game();
       const move1 = game1.move({ from: 'e2', to: 'e4' });
-      
+
       expect(move1?.san).toBe('e4');
 
       const pgn = PgnParser.generate(game1);
@@ -474,7 +474,7 @@ describe('PgnParser', () => {
       game1.move({ from: 'e2', to: 'e4' });
       game1.move({ from: 'e7', to: 'e5' });
       const move3 = game1.move({ from: 'g1', to: 'f3' });
-      
+
       expect(move3?.san).toBe('Nf3');
 
       const pgn = PgnParser.generate(game1);

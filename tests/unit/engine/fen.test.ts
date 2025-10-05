@@ -198,7 +198,8 @@ describe('FenParser', () => {
     });
 
     it('should generate complex middlegame position', () => {
-      const originalFen: Fen = 'r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4';
+      const originalFen: Fen =
+        'r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4';
       const parsed = FenParser.parse(originalFen);
       const generated = FenParser.generate(
         parsed.board,

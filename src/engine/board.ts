@@ -126,7 +126,17 @@ export class Board {
    * @param piece - The piece to place, or null to clear
    */
   public setPieceAt(row: number, col: number, piece: Piece | null): void {
-    if (row < 0 || row > 7 || col < 0 || col > 7) return;
+    if (
+      typeof row !== "number" ||
+      typeof col !== "number" ||
+      row < 0 || row > 7 ||
+      col < 0 || col > 7
+    ) return;
+    // Defensive against prototype pollution (shouldn't be possible, but safe)
+    if (
+      row === "__proto__" || row === "constructor" || row === "prototype" ||
+      col === "__proto__" || col === "constructor" || col === "prototype"
+    ) return;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.board[row]![col] = piece;
   }

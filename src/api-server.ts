@@ -234,8 +234,8 @@ export class ApiServer {
       const gameId = uuidv4();
       this.games.set(gameId, game);
       this.gameMetadata.set(gameId, {
-        aiEnabled: aiEnabled || false,
-        aiDifficulty: aiDifficulty || null,
+        aiEnabled: aiEnabled ?? false,
+        aiDifficulty: aiDifficulty ?? null,
         useOpeningBook: useOpeningBook !== false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -486,8 +486,8 @@ export class ApiServer {
       const { difficulty, thinkingTime, useOpeningBook } = req.body;
       const metadata = this.gameMetadata.get(id);
 
-      const aiDifficulty: AIDifficulty = difficulty || metadata?.aiDifficulty || 'medium';
-      const aiThinkingTime = thinkingTime || 5000;
+      const aiDifficulty: AIDifficulty = difficulty ?? metadata?.aiDifficulty ?? 'medium';
+      const aiThinkingTime = thinkingTime ?? 5000;
       const useBook =
         useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
 
@@ -590,8 +590,8 @@ export class ApiServer {
       const { difficulty, thinkingTime, useOpeningBook } = req.body;
       const metadata = this.gameMetadata.get(id);
 
-      const aiDifficulty: AIDifficulty = difficulty || metadata?.aiDifficulty || 'medium';
-      const aiThinkingTime = thinkingTime || 5000;
+      const aiDifficulty: AIDifficulty = difficulty ?? metadata?.aiDifficulty ?? 'medium';
+      const aiThinkingTime = thinkingTime ?? 5000;
       const useBook =
         useOpeningBook !== undefined ? useOpeningBook : (metadata?.useOpeningBook ?? true);
 

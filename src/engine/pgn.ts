@@ -527,7 +527,7 @@ export class PgnParser {
       }
 
       return game;
-    } catch (error) {
+    } catch {
       return null;
     }
   }

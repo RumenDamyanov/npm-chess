@@ -69,7 +69,7 @@ export class MoveGenerator {
    */
   public generateLegalMovesFrom(from: Square, color: Color): Move[] {
     const piece = this.board.getPiece(from);
-    if (!piece || piece.color !== color) {
+    if (!piece || piece?.color !== color) {
       return [];
     }
 
@@ -342,8 +342,8 @@ export class MoveGenerator {
     const king = this.board.getPiece(kingSquare);
     const rook = this.board.getPiece(rookSquare);
 
-    if (!king || king.type !== 'king' || king.color !== color) return false;
-    if (!rook || rook.type !== 'rook' || rook.color !== color) return false;
+    if (!king || king?.type !== 'king' || king?.color !== color) return false;
+    if (!rook || rook?.type !== 'rook' || rook?.color !== color) return false;
 
     // Check if squares between king and rook are empty
     if (!this.board.isEmpty(`f${rank}`) || !this.board.isEmpty(`g${rank}`)) {
@@ -390,8 +390,8 @@ export class MoveGenerator {
     const king = this.board.getPiece(kingSquare);
     const rook = this.board.getPiece(rookSquare);
 
-    if (!king || king.type !== 'king' || king.color !== color) return false;
-    if (!rook || rook.type !== 'rook' || rook.color !== color) return false;
+    if (!king || king?.type !== 'king' || king?.color !== color) return false;
+    if (!rook || rook?.type !== 'rook' || rook?.color !== color) return false;
 
     // Check if squares between king and rook are empty
     if (
@@ -443,7 +443,7 @@ export class MoveGenerator {
    */
   private isPawnPromotionRequired(from: Square, to: Square, color: Color): boolean {
     const piece = this.board.getPiece(from);
-    if (!piece || piece.type !== 'pawn') return false;
+    if (!piece || piece?.type !== 'pawn') return false;
 
     const toCoords = this.board.squareToCoords(to);
     if (!toCoords) return false;

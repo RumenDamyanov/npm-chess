@@ -286,7 +286,7 @@ export function evaluateBoard(board: Board, color: Color): number {
  * Helper: Convert square to coordinates
  */
 function squareToCoords(square: Square): { row: number; col: number } | null {
-  if (!square || square.length !== 2) return null;
+  if (!square?.length || square.length !== 2) return null;
 
   const file = square.charAt(0);
   const rank = square.charAt(1);

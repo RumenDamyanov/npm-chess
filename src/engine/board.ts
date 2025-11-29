@@ -166,7 +166,7 @@ export class Board {
    * @returns Coordinates {row, col} or null if invalid
    */
   public squareToCoords(square: Square): Coordinates | null {
-    if (!square || square.length !== 2) return null;
+    if (!square?.length || square.length !== 2) return null;
 
     const file = square.charAt(0);
     const rank = square.charAt(1);
@@ -226,7 +226,7 @@ export class Board {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         const piece = this.board[row]?.[col];
-        if (piece && piece.color === color) {
+        if (piece?.color === color) {
           const square = this.coordsToSquare(row, col);
           if (square) {
             pieces.push({ square, piece });
@@ -247,7 +247,7 @@ export class Board {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         const piece = this.board[row]?.[col];
-        if (piece && piece.type === 'king' && piece.color === color) {
+        if (piece?.type === 'king' && piece?.color === color) {
           return this.coordsToSquare(row, col);
         }
       }

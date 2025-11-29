@@ -228,7 +228,7 @@ function getJumpMoves(
       const targetPiece = board.getPieceAt(targetRow, targetCol);
 
       // Can move to empty square or capture enemy piece
-      if (targetPiece === null || targetPiece.color !== color) {
+      if (targetPiece === null || targetPiece?.color !== color) {
         moves.push({ row: targetRow, col: targetCol });
       }
     }
@@ -260,7 +260,7 @@ export function isSquareUnderAttack(
     const pawnCol = col + offset;
     if (board.isValidCoords(pawnRow, pawnCol)) {
       const piece = board.getPieceAt(pawnRow, pawnCol);
-      if (piece && piece.type === 'pawn' && piece.color === attackingColor) {
+      if (piece?.type === 'pawn' && piece?.color === attackingColor) {
         return true;
       }
     }
@@ -272,7 +272,7 @@ export function isSquareUnderAttack(
     const knightCol = col + dCol;
     if (board.isValidCoords(knightRow, knightCol)) {
       const piece = board.getPieceAt(knightRow, knightCol);
-      if (piece && piece.type === 'knight' && piece.color === attackingColor) {
+      if (piece?.type === 'knight' && piece?.color === attackingColor) {
         return true;
       }
     }
@@ -284,7 +284,7 @@ export function isSquareUnderAttack(
     const kingCol = col + dCol;
     if (board.isValidCoords(kingRow, kingCol)) {
       const piece = board.getPieceAt(kingRow, kingCol);
-      if (piece && piece.type === 'king' && piece.color === attackingColor) {
+      if (piece?.type === 'king' && piece?.color === attackingColor) {
         return true;
       }
     }

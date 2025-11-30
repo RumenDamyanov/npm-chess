@@ -1,6 +1,6 @@
 {
   "name": "@rumenx/chess",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A powerful, type-safe chess engine library for TypeScript/JavaScript with complete chess rules, AI opponents, and REST API",
   "keywords": [
     "chess",

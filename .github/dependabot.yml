@@ -11,6 +11,8 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - "RumenDamyanov"
+    assignees:
+      - "RumenDamyanov"
     commit-message:
       prefix: "chore(deps):"
       include: "scope"
@@ -27,6 +29,10 @@ updates:
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    reviewers:
+      - "RumenDamyanov"
+    assignees:
+      - "RumenDamyanov"
     schedule:
       interval: "weekly"
       day: "monday"

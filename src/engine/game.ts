@@ -284,7 +284,7 @@ export class Game {
    * @returns True if game is over
    */
   public isGameOver(): boolean {
-    return this.gameStatus !== 'active';
+    return this.gameStatus !== 'active' && this.gameStatus !== 'check';
   }
 
   /**

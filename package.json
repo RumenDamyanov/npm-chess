@@ -1,6 +1,6 @@
 {
   "name": "@rumenx/chess",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A powerful, type-safe chess engine library for TypeScript/JavaScript with complete chess rules, AI opponents, and REST API",
   "keywords": [
     "chess",
@@ -104,10 +104,10 @@
     "example:ai": "tsx examples/ai-game.ts"
   },
   "dependencies": {
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "cors": "^2.8.5",
     "dotenv": "^18.0.0",
-    "express": "^5.1.0",
+    "express": "^5.3.0",
     "uuid": "^14.0.0",
     "winston": "^3.15.0"
   },
@@ -136,7 +136,7 @@
     "ws": "^8.18.0"
   },
   "peerDependencies": {
-    "express": "^5.1.0",
+    "express": "^5.3.0",
     "fastify": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
@@ -148,7 +148,7 @@
     }
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": "^22.23.4 || ^24.22.1 || ^26.12.1",
     "npm": ">=9.0.0"
   },
   "publishConfig": {

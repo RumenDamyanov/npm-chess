@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-28
+
+### Security
+
+- Document that Node2Shell
+  ([CVE-2026-111497](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases))
+  is in the Node.js runtime. This package cannot patch it. Run Node.js
+  **22.23.4+**, **24.22.1+**, or **26.12.1+**. Node.js 18 and 20 are end of life
+  and receive no fix.
+
+### Changed
+
+- Require Node.js `^22.23.4 || ^24.22.1 || ^26.12.1`. CI tests 22, 24, and 26.
+- Require Express `^5.3.0` and `compression` `^1.8.2`, which pull patched `body-parser`, `proxy-addr`, and `qs`.
+
 ## [Unreleased]
 
 ### Planned

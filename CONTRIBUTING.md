@@ -18,6 +18,8 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 
 ## Getting Started
 
+Use **Node.js 22.23.4+**, **24.22.1+**, or **26.12.1+**. Node.js 18 and 20 are end of life and have no Node2Shell fix.
+
 1. **Fork the repository** and clone it locally
 2. **Install dependencies**: `npm install`
 3. **Create a feature branch**: `git checkout -b feature/your-feature-name`

@@ -145,6 +145,13 @@ yarn add @rumenx/chess
 pnpm add @rumenx/chess
 ```
 
+### Requirements
+
+- **Node.js**: 22.23.4+, 24.22.1+, or 26.12.1+. Node.js 18 and 20 are end of
+  life and have no fix for
+  [Node2Shell](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases)
+  (CVE-2026-111497).
+
 ## 🚀 Quick Start
 
 ```typescript

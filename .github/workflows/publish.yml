@@ -35,8 +35,8 @@ jobs:
           npm run test:coverage
           npm run build
 
-      - name: Verify package can be packed
-        run: npm pack --dry-run
+      - name: Load the packed package
+        run: npm run smoke
 
       - name: Publish to NPM
         run: npm publish --provenance --access public

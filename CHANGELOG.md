@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-11-24
+
+### Fixed
+
+- The published package can be loaded with both `require('@rumenx/chess')` and
+  `import('@rumenx/chess')`. The build now rewrites extensionless imports and
+  `@/` aliases to real `.js` files, and marks `dist/cjs` as CommonJS.
+- `VERSION` matches the package version.
+- `tslib` is a runtime dependency, because the compiled CommonJS entry imports it.
+
 ## [1.1.0] - 2026-10-28
 
 ### Security

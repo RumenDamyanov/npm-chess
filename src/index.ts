@@ -24,4 +24,4 @@ export type { ApiConfig, GameResponse, MoveRecord, ErrorResponse } from './api-s
 export type { Color, PieceType, Piece, Square, Position, Move, GameStatus } from './types/index';
 
 // Package version
-export const VERSION = '0.5.0';
+export const VERSION = '1.1.1';
